@@ -1,0 +1,24 @@
+# Copyright 2009 Jonathan Dahan <jedahan@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+# Based upon 'xsel-1.2.0.ebuild', which is:
+#   Copyright 1999-2009 Gentoo Foundation
+
+DESCRIPTION="XSel is a command-line program for getting and setting the contents of the X selection."
+HOMEPAGE="http://www.vergenet.net/~conrad/software/xsel"
+DOWNLOADS="http://www.vergenet.net/~conrad/software/${PN}/download/${PNV}.tar.gz"
+
+LICENCES="as-is"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        x11-libs/libX11
+    	x11-libs/libXext
+    build:
+        x11-proto/xproto
+    	x11-libs/libXt
+    "
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-dependency-tracking )
