@@ -17,13 +17,12 @@ SLOT="0"
 PLATFORMS="~amd64"
 
 DEPENDENCIES="
-    build+run:
-        x11-libs/libX11
-    	x11-libs/libXext
+    x11-libs/libX11
+    x11-libs/libXext
     build:
         x11-proto/xproto
     	x11-libs/libXt
-    "
+"
 
 DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-dependency-tracking )
 
