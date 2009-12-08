@@ -24,5 +24,3 @@ DEPENDENCIES="
     	x11-libs/libXt
 "
 
-DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-dependency-tracking )
-
