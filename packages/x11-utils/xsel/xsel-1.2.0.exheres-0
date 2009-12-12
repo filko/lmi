@@ -21,6 +21,6 @@ DEPENDENCIES="
     x11-libs/libXext
     build:
         x11-proto/xproto
-    	x11-libs/libXt
+        x11-libs/libXt
 "
 
