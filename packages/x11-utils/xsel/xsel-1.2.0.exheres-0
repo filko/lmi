@@ -5,7 +5,9 @@
 
 SUMMARY="CLI application for getting and setting the contents of the X selection"
 DESCRIPTION="
-XSel is a command-line program for getting and setting the contents of the X selection. Normally this is only accessible by manually highlighting information and pasting it with the middle mouse button.
+XSel is a command-line program for getting and setting the contents of the X 
+selection. Normally this is only accessible by manually highlighting information
+and pasting it with the middle mouse button.
 "
 HOMEPAGE="http://www.vergenet.net/~conrad/software/${PN}"
 DOWNLOADS="${HOMEPAGE}/download/${PNV}.tar.gz"
@@ -17,10 +19,11 @@ SLOT="0"
 PLATFORMS="~amd64"
 
 DEPENDENCIES="
-    x11-libs/libX11
-    x11-libs/libXext
     build:
-        x11-proto/xproto
         x11-libs/libXt
+        x11-proto/xproto
+    build+rin:
+        x11-libs/libX11
+        x11-libs/libXext
 "
 
