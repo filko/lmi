@@ -22,7 +22,7 @@ DEPENDENCIES="
     build:
         x11-libs/libXt
         x11-proto/xproto
-    build+rin:
+    build+run:
         x11-libs/libX11
         x11-libs/libXext
 "
