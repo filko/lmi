@@ -1,0 +1,16 @@
+# Copyright 2010 Timothy Redaelli <timothy@redaelli.eu>                                                                                                                             
+# Distributed under the terms of the GNU General Public License v2
+
+require googlecode [ suffix=tar.gz ]
+
+SUMMARY="A C++ logging library"
+
+LICENCES="LGPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+BUGS_TO="timothy@redaelli.eu"
+

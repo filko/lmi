@@ -1,0 +1,25 @@
+# Copyright 2010 Timothy Redaelli <timothy@redaelli.eu>                                                                                                                             
+# Distributed under the terms of the GNU General Public License v2
+
+require googlecode [ pv=${PV}-2 suffix=tgz ]
+
+SUMMARY="Encrypted Filesystem module for Linux"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build:
+        sys-devel/gettext
+    build+run:
+        dev-libs/boost
+        dev-libs/openssl
+        dev-libs/rlog
+"
+
+BUGS_TO="timothy@redaelli.eu"
+
+DEFAULT_SRC_PREPARE_PATCHES=( -p0 "${FILES}"/${PNV}-glibc-2.10.patch )
+
