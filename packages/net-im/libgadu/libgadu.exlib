@@ -1,0 +1,19 @@
+# Copyright 2010 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Library for the Gadu-Gadu protocol"
+HOMEPAGE="http://toxygen.net/libgadu/"
+DOWNLOADS="http://toxygen.net/libgadu/files/${PNV}.tar.gz"
+
+LICENCES="LGPL-2.1"
+SLOT="0"
+MYOPTIONS="ssl"
+
+DEPENDENCIES="
+    build+run:
+        ssl? ( dev-libs/gnutls )
+"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --without-openssl )
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( 'ssl gnutls' )
+

@@ -1,0 +1,19 @@
+# Copyright 2010 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="IRC Bot"
+DESCRIPTION="Nested commands, easy configuration, and an incredibly flexible and easy-to-use plugin system distinguish Supybot from other IRC bots. There simply isn't a more flexible or easier to use IRC bot!"
+HOMEPAGE="http://sourceforge.net/projects/supybot/"
+DOWNLOADS="mirror://sourceforge/supybot/supybot/${PNV}/${PNV}.tar.gz"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+require distutils [ python_dep="2.4" ]
+
+DEPENDENCIES="
+    build+run:
+"
+
