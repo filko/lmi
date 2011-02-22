@@ -11,7 +11,7 @@ Reason: Respect CXX, CXXFLAGS, CFLAGS and LDFLAGS
 +CXX?=c++
  INCLUDES=
  DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
--CXXFLAGS=-g -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
+-CXXFLAGS?=-g -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 +CXXFLAGS ?= -g
 +CXXFLAGS += -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 -LDFLAGS=
@@ -29,7 +29,7 @@ Reason: Respect CXX, CXXFLAGS, CFLAGS and LDFLAGS
 +CXXFLAGS += -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
 +CFLAGS += -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
  GTKLIBS=$(shell pkg-config gtk+-2.0 --libs)
- LIBS=-L../core -llshw -lresolv $(GTKLIBS)
+ LIBS=-L../core -llshw -lresolv -lsqlite3 $(GTKLIBS)
 -LDFLAGS=
  ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
  	LDFLAGS+= -Wl,--as-needed
@@ -44,20 +44,23 @@ Reason: Respect CXX, CXXFLAGS, CFLAGS and LDFLAGS
  	rm -f $(OBJS) gtk-$(PACKAGENAME) gtk-lshw.glade.bak gtk-lshw.gladep.bak interface.c.bak interface.h.bak callbacks.c.bak callbacks.h.bak Makefile.bak
 --- lshw/src/Makefile
 +++ lshw/src/Makefile
-@@ -18,8 +18,10 @@
+@@ -21,11 +21,13 @@
  CXX?=c++
  INCLUDES=-I./core/
  DEFINES=-DPREFIX=\"$(PREFIX)\" -DSBINDIR=\"$(SBINDIR)\" -DMANDIR=\"$(MANDIR)\" -DDATADIR=\"$(DATADIR)\"
 -CXXFLAGS=-g -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
--LDFLAGS=-L./core/ -g
 +CXXFLAGS ?= -g
-+CXXFLAGS += -Wall $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
++CXXFLAGS += -Wall -g $(INCLUDES) $(DEFINES) $(RPM_OPT_FLAGS)
+ ifeq ($(SQLITE), 1)
+ 	CXXFLAGS+= -DSQLITE $(shell pkg-config --cflags sqlite3)
+ endif
+-LDFLAGS=-L./core/ -g
 +LDFLAGS ?= -g
 +LDFLAGS += -L./core/
  ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
  	LDFLAGS+= -Wl,--as-needed
  endif
-@@ -49,7 +51,6 @@
+@@ -70,7 +72,6 @@
  
  $(PACKAGENAME)-static: core core/lib$(PACKAGENAME).a $(PACKAGENAME).o
  	$(CXX) $(LDSTATIC) $(LDFLAGS) -o $@ $(PACKAGENAME).o $(LIBS)
