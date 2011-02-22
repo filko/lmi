@@ -1,0 +1,33 @@
+# Copyright 2010 Timothy Redaelli <timothy@redaelli.eu>
+# Distributed under the terms of the GNU General Public License v2
+
+MY_PV=${PV:0-1}.${PV:0:${#PV}-1}
+MY_PNV=${PN}-${MY_PV}
+SUMMARY="Hardware Lister"
+
+HOMEPAGE="http://ezix.org/project/wiki/HardwareLiSter"
+DOWNLOADS="http://ezix.org/software/files/${MY_PNV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="gtk"
+
+DEPENDENCIES="gtk? ( x11-libs/gtk+:2 )"
+
+BUGS_TO="djc@djc.id.au"
+
+WORK="${WORKBASE}"/${MY_PNV}
+
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/${PNV}-{build,gcc-4.5}.patch )
+
+src_compile() {
+    default
+    option gtk && emake gui
+}
+
+src_install() {
+    default
+    dodoc docs/*
+    option gtk && emake DESTDIR="${IMAGE}" install-gui
+}
