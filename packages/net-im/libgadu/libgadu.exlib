@@ -11,6 +11,7 @@ MYOPTIONS="ssl"
 
 DEPENDENCIES="
     build+run:
+        sys-libs/zlib
         ssl? ( dev-libs/gnutls )
 "
 
