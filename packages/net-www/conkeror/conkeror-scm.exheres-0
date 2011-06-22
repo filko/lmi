@@ -33,6 +33,6 @@ src_install() {
     doman contrib/man/conkeror.1
 
     insinto "${conkeror_dir}"
-    doins -r application.ini branding chrome components content defaults help Info.plist locale modules search-engines style tests
+    doins -r application.ini branding chrome chrome.manifest components content defaults help Info.plist locale modules search-engines style tests
 }
 
