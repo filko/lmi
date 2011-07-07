@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 SCM_REPOSITORY="git://repo.or.cz/conkeror.git"
-require multilib scm-git
+require scm-git
 
 SUMMARY="Webbrowser based on Gecko engine, inspired by Emacs"
 HOMEPAGE="http://conkeror.org"
@@ -23,7 +23,7 @@ src_compile() {
 }
 
 src_install() {
-    local conkeror_dir="/usr/$(get_libdir)/${PN}"
+    local conkeror_dir="/usr/${LIBDIR}/${PN}"
     exeinto "${conkeror_dir}"
     doexe conkeror-spawn-helper
     exeinto "${conkeror_dir}/contrib"
