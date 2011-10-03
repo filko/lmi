@@ -2,9 +2,5 @@
 # Distributed under the terms of the GNU General Public License v2
 
 require worker
-
-SLOT=0
 PLATFORMS="~amd64 ~x86"
-
-DOWNLOADS="http://www.boomerangsworld.de/cms/${PN}/downloads/${PNV}.tar.bz2"
 

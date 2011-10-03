@@ -1,10 +1,10 @@
-# Copyright 2009 Ç£ukasz P. Michalik <lmi@ift.uni.wroc.pl>
+# Copyright 2009 ≈Åukasz P. Michalik <lmi@ift.uni.wroc.pl>
 # Distributed under the terms of the GNU General Public License v2
 
 SUMMARY="Worker is a file manager for the X Window System"
 HOMEPAGE="http://www.boomerangsworld.de/worker/"
-
-MYOPTIONS="hal"
+DOWNLOADS="http://www.boomerangsworld.de/cms/${PN}/downloads/${PNV}.tar.bz2"
+SLOT=0
 
 DEPENDENCIES="
     build+run:
