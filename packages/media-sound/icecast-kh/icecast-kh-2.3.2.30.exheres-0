@@ -1,16 +1,14 @@
 # Copyright 2010 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
 # Distributed under the terms of the GNU General Public License v2
 
-SUMMARY=""
-DESCRIPTION="
-"
+SUMMARY="icecast is free server software for streaming multimedia, kh branch"
+DESCRIPTION="This branch extends on the offical release with features that may be (if found to be working out well) merged into the next offical release."
 HOMEPAGE="http://www.xiphicecast.webspace.virginmedia.com/"
 DOWNLOADS="http://www.xiphicecast.webspace.virginmedia.com/icecast-$(ever range -3)-kh$(ever range 4-).tar.gz"
 
-LICENCES=""
+LICENCES="GPL-2"
 SLOT="0"
 PLATFORMS="~amd64"
-MYOPTIONS=""
 
 WORK="${WORKBASE}/icecast-$(ever range -3)-kh$(ever range 4-)/"
 
@@ -24,6 +22,4 @@ DEPENDENCIES="
 "
 
 DEFAULT_SRC_CONFIGURE_PARAMS=( --with-ogg --with-vorbis --without-theora --without-speex --without-curl --with-openssl --disable-yp )
-DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( )
-DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( )
 
