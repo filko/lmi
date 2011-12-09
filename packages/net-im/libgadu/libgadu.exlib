@@ -11,9 +11,9 @@ MYOPTIONS="gnutls [[ description = [ Use GnuTLS instead of OpenSSL ] ]]"
 
 DEPENDENCIES="
     build+run:
-        sys-libs/zlib
        !gnutls? ( dev-libs/openssl )
         gnutls? ( dev-libs/gnutls )
+        sys-libs/zlib
 "
 
 DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( '!gnutls openssl' gnutls )

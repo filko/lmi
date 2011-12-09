@@ -14,12 +14,12 @@ WORK="${WORKBASE}/icecast-$(ever range -3)-kh$(ever range 4-)/"
 
 DEPENDENCIES="
     build+run:
-        dev-libs/libxslt
         dev-libs/libxml2
+        dev-libs/libxslt
+        dev-libs/openssl
         media-libs/libogg
         media-libs/libvorbis
-        dev-libs/openssl
 "
 
-DEFAULT_SRC_CONFIGURE_PARAMS=( --with-ogg --with-vorbis --without-theora --without-speex --without-curl --with-openssl --disable-yp )
+DEFAULT_SRC_CONFIGURE_PARAMS=( --without-curl --with-ogg --with-openssl --without-speex --without-theora --with-vorbis --disable-yp )
 
