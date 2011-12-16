@@ -1,0 +1,17 @@
+# Copyright 2011 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="A html to text / ascii converter specifically programmed to get the best out of incorrect html."
+HOMEPAGE="http://bhaak.dyndns.org/vilistextum/"
+DOWNLOADS="${HOMEPAGE}/${PNV}.tar.bz2"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --hates=docdir )
+
