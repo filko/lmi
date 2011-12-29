@@ -1,0 +1,35 @@
+# Copyright 2011 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
+# Distributed under the terms of the GNU General Public License v2
+
+require sourceforge [ suffix=tar.gz ]
+
+SUMMARY="General purpose, double precision, Celestial Mechanics, Astrometry and Astrodynamics library"
+
+LICENCES="LGPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS="doc"
+
+DEPENDENCIES="
+    build:
+        doc? ( app-doc/doxygen )
+"
+
+src_compile() {
+    default
+
+    if option doc ; then
+        edo cd doc
+        edo doxygen
+    fi
+}
+
+src_install() {
+    default
+
+    if option doc ; then
+        insinto /usr/share/doc/${PNVR}/html/
+        doins doc/html/*
+    fi
+}
+
