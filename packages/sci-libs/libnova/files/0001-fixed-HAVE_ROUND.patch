@@ -1,0 +1,104 @@
+Source: upstream
+Reason: HAVE_* macro slided to installed headers
+
+From e838ab496dfbbecdfa6d4ca07d7543f8e94cb96c Mon Sep 17 00:00:00 2001
+From: pkubanek <pkubanek@a9329980-0c59-416b-a420-72dd107c4633>
+Date: Thu, 12 Jan 2012 14:53:04 +0000
+Subject: [PATCH] fixed HAVE_ROUND
+
+git-svn-id: https://libnova.svn.sourceforge.net/svnroot/libnova@278 a9329980-0c59-416b-a420-72dd107c4633
+
+diff --git trunk/libnova/ChangeLog trunk/libnova/ChangeLog
+index 0bdb587..7f5e14f 100644
+--- libnova/ChangeLog
++++ libnova/ChangeLog
+@@ -1,5 +1,13 @@
+ ChangeLog
+ 
++20120111
++	utility.c:
++	utility.h:
++	julian_day.c:
++		Fix problems with double redefinition, pointed by Lukasz Michalik
++	
++	Petr Kubanek
++
+ *********** release of 0.14.0
+ 
+ 20110730
+diff --git trunk/libnova/src/julian_day.c trunk/libnova/src/julian_day.c
+index 71a46d3..8133d89 100644
+--- libnova/src/julian_day.c
++++ libnova/src/julian_day.c
+@@ -220,6 +220,16 @@ double ln_get_julian_from_timet (time_t * in_time)
+ 	return (double)(2440587.5 + (double)(*in_time / (double) 86400.0));
+ }
+ 
++#ifndef HAVE_ROUND
++
++/* Simple round to nearest */
++double round (double x)
++{
++	return floor(x + 0.5);
++}
++
++#endif /* ! HAVE_ROUND */
++
+ /*! \fn void ln_get_timet_from_julian (double JD, time_t * in_time)
+ * \param JD Julian day
+ * \param in_time Pointer to store time_t
+diff --git trunk/libnova/src/libnova/libnova.h trunk/libnova/src/libnova/libnova.h
+index 17bee91..27b729b 100644
+--- libnova/src/libnova/libnova.h
++++ libnova/src/libnova/libnova.h
+@@ -60,7 +60,7 @@
+ *
+ * \section download Download
+ * The latest released version of libnova is 0.13.0
+-* It is available for download <A href="http://sf.net/project/showfiles.php?group_id=57697">here.</A>
++* It is available for download <A href="http://sourceforge.net/projects/libnova/files/libnova/">here.</A>
+ *
+ * \section cvs CVS
+ * The latest CVS version of libnova is available via CVS <A href="http://sf.net/cvs/?group_id=57697">here.</A>
+diff --git trunk/libnova/src/libnova/utility.h trunk/libnova/src/libnova/utility.h
+index 0c964ef..85ce8f8 100644
+--- libnova/src/libnova/utility.h
++++ libnova/src/libnova/utility.h
+@@ -237,13 +237,6 @@ double cbrt (double x);
+ 
+ #endif /* __C89_SUB__ */
+ 
+-#ifndef HAVE_ROUND
+-
+-/* Simple round to nearest */
+-double round (double x);
+-
+-#endif /* !HAVE_ROUND */
+-
+ #if defined(__WIN32__) || defined(sun) || defined(__C89_SUB__)
+ 
+ /* Not a Number function generator */
+diff --git trunk/libnova/src/utility.c trunk/libnova/src/utility.c
+index 611ea1e..0bc3ed6 100644
+--- libnova/src/utility.c
++++ libnova/src/utility.c
+@@ -720,16 +720,6 @@ double cbrt (double x)
+ 
+ #endif /* __C89_SUB__ */
+ 
+-#ifndef HAVE_ROUND
+-
+-/* Simple round to nearest */
+-double round (double x)
+-{
+-	return floor(x + 0.5);
+-}
+-
+-#endif /* ! HAVE_ROUND */
+-
+ #if defined(__WIN32__) || defined(sun) || defined(__C89_SUB__)
+ 
+ /* Not a Number function generator */
+-- 
+1.7.8.1
+
