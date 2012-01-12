@@ -7,7 +7,7 @@ SUMMARY="General purpose, double precision, Celestial Mechanics, Astrometry and 
 
 LICENCES="LGPL-2"
 SLOT="0"
-PLATFORMS="~amd64"
+PLATFORMS="~amd64 ~x86"
 MYOPTIONS="doc"
 
 DEPENDENCIES="
