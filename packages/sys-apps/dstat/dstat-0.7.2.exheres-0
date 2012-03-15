@@ -1,0 +1,24 @@
+# Copyright 2012 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Dstat is a versatile replacement for vmstat, iostat, netstat and ifstat"
+
+DESCRIPTION="Dstat allows you to view all of your system resources in real-time, you can eg. compare
+disk utilization in combination with interrupts from your IDE controller, or compare the network
+bandwidth numbers directly with the disk throughput (in the same interval). Dstat gives you detailed
+selective information in columns and clearly indicates in what magnitude and unit the output is
+displayed. Less confusion, less mistakes."
+
+HOMEPAGE="http://dag.wieers.com/home-made/${PN}/"
+DOWNLOADS="http://dag.wieers.com/home-made/${PN}/${PNV}.tar.bz2"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-lang/python:*[<3]
+"
+
