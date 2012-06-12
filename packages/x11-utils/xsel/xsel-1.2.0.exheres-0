@@ -5,14 +5,12 @@
 
 SUMMARY="CLI application for getting and setting the contents of the X selection"
 DESCRIPTION="
-XSel is a command-line program for getting and setting the contents of the X 
+XSel is a command-line program for getting and setting the contents of the X
 selection. Normally this is only accessible by manually highlighting information
 and pasting it with the middle mouse button.
 "
 HOMEPAGE="http://www.vergenet.net/~conrad/software/${PN}"
 DOWNLOADS="${HOMEPAGE}/download/${PNV}.tar.gz"
-
-BUGS_TO="jedahan@gmail.com"
 
 LICENCES="as-is"
 SLOT="0"
