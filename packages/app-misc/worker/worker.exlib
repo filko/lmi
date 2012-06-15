@@ -10,13 +10,18 @@ SLOT=0
 REMOTE_IDS="sourceforge:workerfm"
 
 MYOPTIONS="
-    udisks [[ description = [ support mounting devices with udisks ] ]]
+    udisks [[ description = [ Support mounting devices with udisks ] ]]
+    xinerama
 "
 
 DEPENDENCIES="
     build+run:
+        x11-libs/libICE
         x11-libs/libSM
         x11-libs/libX11
+        xinerama? (
+            x11-libs/libXinerama
+        )
         udisks? (
             dev-libs/dbus-glib
         )
@@ -29,7 +34,6 @@ DEPENDENCIES="
 worker_src_configure()
 {
     econf --without-avfs --without-hal --disable-xft \
-        $(option_with udisks dbus)
+        $(option_with udisks dbus) $(option_with xinerama)
 }
-
 
