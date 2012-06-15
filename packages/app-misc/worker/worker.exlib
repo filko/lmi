@@ -7,6 +7,7 @@ SUMMARY="Worker is a file manager for the X Window System"
 HOMEPAGE="http://www.boomerangsworld.de/worker/"
 DOWNLOADS="http://www.boomerangsworld.de/cms/${PN}/downloads/${PNV}.tar.bz2"
 SLOT=0
+LICENCES="GPL-2"
 REMOTE_IDS="sourceforge:workerfm"
 
 MYOPTIONS="
