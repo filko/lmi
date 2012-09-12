@@ -4,6 +4,10 @@
 MY_PV=${PV:0-1}.${PV:0:${#PV}-1}
 MY_PNV=${PN}-${MY_PV}
 SUMMARY="Hardware Lister"
+DESCRIPTION="lshw (Hardware Lister) is a small tool to provide detailed information on the hardware
+configuration of the machine. It can report exact memory configuration, firmware version, mainboard
+configuration, CPU version and speed, cache configuration, bus speed, etc. on DMI-capable x86 or EFI
+(IA-64) systems and on some PowerPC machines"
 
 HOMEPAGE="http://ezix.org/project/wiki/HardwareLiSter"
 DOWNLOADS="http://ezix.org/software/files/${MY_PNV}.tar.gz"
@@ -15,11 +19,7 @@ MYOPTIONS="gtk"
 
 DEPENDENCIES="gtk? ( x11-libs/gtk+:2 )"
 
-BUGS_TO="djc@djc.id.au"
-
 WORK="${WORKBASE}"/${MY_PNV}
-
-DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/${PNV}-build.patch )
 
 src_compile() {
     default
@@ -31,3 +31,4 @@ src_install() {
     dodoc docs/*
     option gtk && emake DESTDIR="${IMAGE}" install-gui
 }
+
