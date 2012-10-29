@@ -1,7 +1,7 @@
 # Copyright 2011 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
 # Distributed under the terms of the GNU General Public License v2
 
-require sourceforge [ suffix=tar.gz ]
+require sourceforge [ suffix=tar.gz ] autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.12 ] ]
 
 SUMMARY="General purpose, double precision, Celestial Mechanics, Astrometry and Astrodynamics library"
 
@@ -15,14 +15,13 @@ DEPENDENCIES="
         doc? ( app-doc/doxygen )
 "
 
-DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/0001-fixed-HAVE_ROUND.patch )
-
 src_compile() {
     default
 
     if option doc ; then
-        edo cd doc
+        edo pushd doc
         edo doxygen
+        edo popd
     fi
 }
 
