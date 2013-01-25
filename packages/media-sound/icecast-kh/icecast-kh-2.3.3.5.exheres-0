@@ -1,16 +1,19 @@
 # Copyright 2010 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
 # Distributed under the terms of the GNU General Public License v2
 
+MY_PNV="icecast-$(ever range -3)-kh$(ever range 4-)"
+
+require github [ user=karlheyes pnv=${MY_PNV} suffix=tar.gz ]
+
 SUMMARY="icecast is free server software for streaming multimedia, kh branch"
 DESCRIPTION="This branch extends on the offical release with features that may be (if found to be working out well) merged into the next offical release."
-HOMEPAGE="http://www.xiphicecast.webspace.virginmedia.com/"
-DOWNLOADS="http://www.xiphicecast.webspace.virginmedia.com/icecast-$(ever range -3)-kh$(ever range 4-).tar.gz"
+HOMEPAGE="http://karlheyes.github.com/"
 
 LICENCES="GPL-2"
 SLOT="0"
 PLATFORMS="~amd64"
 
-WORK="${WORKBASE}/icecast-$(ever range -3)-kh$(ever range 4-)/"
+WORK="${WORKBASE}/${MY_PNV}/"
 
 DEPENDENCIES="
     build+run:
