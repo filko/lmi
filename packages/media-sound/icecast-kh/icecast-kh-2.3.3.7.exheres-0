@@ -3,17 +3,17 @@
 
 MY_PNV="icecast-$(ever range -3)-kh$(ever range 4-)"
 
-require github [ user=karlheyes pnv=${MY_PNV} suffix=tar.gz ]
-
 SUMMARY="icecast is free server software for streaming multimedia, kh branch"
 DESCRIPTION="This branch extends on the offical release with features that may be (if found to be working out well) merged into the next offical release."
 HOMEPAGE="http://karlheyes.github.com/"
+
+DOWNLOADS="https://github.com/karlheyes/${PN}/archive/${MY_PNV}.tar.gz"
 
 LICENCES="GPL-2"
 SLOT="0"
 PLATFORMS="~amd64"
 
-WORK="${WORKBASE}/${MY_PNV}/"
+WORK="${WORKBASE}/${PN}-${MY_PNV}/"
 
 DEPENDENCIES="
     build+run:
