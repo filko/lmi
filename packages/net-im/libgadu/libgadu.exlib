@@ -2,8 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 
 SUMMARY="Library for the Gadu-Gadu protocol"
-HOMEPAGE="http://toxygen.net/libgadu/"
-DOWNLOADS="http://toxygen.net/libgadu/files/${PNV}.tar.gz"
+HOMEPAGE="http://libgadu.net/"
+DOWNLOADS="https://github.com/wojtekka/libgadu/releases/download/${PV}/${PNV}.tar.gz"
 
 LICENCES="LGPL-2.1"
 SLOT="0"
