@@ -11,6 +11,7 @@ LICENCES="GPL-2"
 REMOTE_IDS="sourceforge:workerfm"
 
 MYOPTIONS="
+    lua
     udisks [[ description = [ Support mounting devices with udisks ] ]]
 "
 
@@ -20,6 +21,9 @@ DEPENDENCIES="
         x11-libs/libSM
         x11-libs/libX11
         x11-libs/libXinerama
+        lua? (
+            dev-lang/lua:=
+        )
         udisks? (
             dev-libs/dbus-glib
         )
@@ -32,6 +36,7 @@ DEPENDENCIES="
 worker_src_configure()
 {
     econf --without-avfs --without-hal --enable-inotify --disable-xft \
-        $(option_with udisks dbus)
+        $(option_with udisks dbus) \
+        $(option_enable lua)
 }
 
