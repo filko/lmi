@@ -10,7 +10,7 @@ require sourceforge
 SUMMARY="Planetarium"
 DESCRIPTION="Desktop planetarium that renders photorealistic 3D sky in real time."
 CATALOGS=(stars_5_2v0_0.cat stars_4_1v0_0.cat stars_6_2v0_0.cat stars_7_2v0_0.cat stars_8_2v0_0.cat)
-HOMEPAGE="http://stellarium.org/"
+HOMEPAGE="http://${PN}.org/"
 DOWNLOADS="
 mirror://sourceforge/${PN}/${PV}/${PNV}.tar.gz
 stars? (
