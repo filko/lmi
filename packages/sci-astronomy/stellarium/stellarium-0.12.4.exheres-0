@@ -1,9 +1,0 @@
-# Copyright 2013 John Kallimanis
-# Distributed under the terms of the GNU General Public License v2
-# Initially based on stellarium-0.12.0.ebuild from Gentoo, which is 
-# Copyright 1999-2013 Gentoo Foundation
-
-require stellarium
-
-PLATFORMS="~amd64"
-
