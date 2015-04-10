@@ -23,10 +23,10 @@ src_compile() {
 }
 
 src_install() {
-    local conkeror_dir="/usr/libexec/${PN}"
+    local conkeror_dir="/usr/$(exhost --target)/libexec/${PN}"
     exeinto "${conkeror_dir}"
     doexe conkeror-spawn-helper
-    exeinto /usr/bin
+    exeinto "/usr/$(exhost --target)/bin"
     doexe "${FILES}"/conkeror
     doman contrib/man/conkeror.1
 
