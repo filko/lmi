@@ -22,3 +22,5 @@ DEPENDENCIES="
         dev-lang/python:*[<3]
 "
 
+DEFAULT_SRC_INSTALL_PARAMS=( DESTDIR="${IMAGE}/usr/$(exhost --target)/" prefix= )
+
