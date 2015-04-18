@@ -21,12 +21,12 @@ DEPENDENCIES="gtk? ( x11-libs/gtk+:2 )"
 
 WORK="${WORKBASE}"/${MY_PNV}
 
-DEFAULT_SRC_COMPILE_PARAMS=( CXX=$(exhost --target)g++ PREFIX="/usr/$(exhost --target)/" SBINDIR="/usr/$(exhost --target)/bin" )
-DEFAUTL_SRC_INSTALL_PARAMS=( PREFIX="/usr/$(exhost --target)/" SBINDIR="/usr/$(exhost --target)/bin" )
+DEFAULT_SRC_COMPILE_PARAMS=( CXX=$(exhost --target)-g++ SBINDIR="/usr/$(exhost --target)/bin" )
+DEFAULT_SRC_INSTALL_PARAMS=( ${DEFAULT_SRC_COMPILE_PARAMS[@]} )
 
 src_prepare() {
     default
-    edo sed -e '/CXX=/d' -e '/^SBINDIR=/d' -e "s/pkg-config/$(exhost --target)-pkg-config/" -i src/Makefile src/core/Makefile src/gui/Makefile
+    edo sed -e '/CXX=/d' -e "s/pkg-config/$(exhost --target)-pkg-config/" -i src/Makefile src/core/Makefile src/gui/Makefile
 }
 
 src_compile() {
@@ -37,6 +37,6 @@ src_compile() {
 src_install() {
     default
     dodoc docs/*
-    option gtk && emake DESTDIR="${IMAGE}" PREFIX="/usr/$(exhost --target)/" SBINDIR="/usr/$(exhost --target)/bin" install-gui
+    option gtk && emake DESTDIR="${IMAGE}" "${DEFAULT_SRC_INSTALL_PARAMS[@]}" install-gui
 }
 
