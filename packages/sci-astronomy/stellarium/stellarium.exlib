@@ -68,5 +68,9 @@ stellarium_src_install() {
         doins "${WORKBASE}"/stars_*.cat
     fi
     cmake_src_install
+
+    MULTIARCH_MOVE_DIRS=(man applications icons)
+    edo cp -r ${MULTIARCH_MOVE_DIRS[@]/#/"${IMAGE}"/usr/"$(exhost --target)"/share/} "${IMAGE}"/usr/share/
+    edo rm -r ${MULTIARCH_MOVE_DIRS[@]/#/"${IMAGE}"/usr/"$(exhost --target)"/share/}
 }
 
