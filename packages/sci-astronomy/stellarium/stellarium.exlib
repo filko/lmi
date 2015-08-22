@@ -34,9 +34,9 @@ DEPENDENCIES="
 if ever at_least 0.13.1; then
     DEPENDENCIES+="
     build+run:
-        x11-libs/qtbase:5
-        x11-libs/qtscript:5
-        x11-libs/qtquick1:5
+        x11-libs/qtbase:5[>=5.5]
+        x11-libs/qtscript:5[>=5.5]
+        x11-libs/qtquick1:5[>=5.5]
 "
     else
     DEPENDENCIES+="
@@ -48,6 +48,10 @@ if ever at_least 0.13.1; then
         x11-libs/libXt
         x11-libs/qt:4[opengl]
 "
+fi
+
+if [ "${PV}" == "0.13.3" ] ; then
+       DEFAULT_SRC_PREPARE_PATCHES=(-p0 "${FILES}"/stellarium-0.13.3-qt55.patch)
 fi
 
 BUGS_TO="johnkall007@gmail.com"
