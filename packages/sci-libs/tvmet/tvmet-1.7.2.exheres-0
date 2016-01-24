@@ -1,0 +1,22 @@
+# Copyright 2016 Łukasz P. Michalik <lpmichalik@googlemail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require sourceforge [ suffix=tar.bz2 ]
+#autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.12 ] ]
+
+SUMMARY="This Tiny Vector and Matrix template library"
+
+LICENCES="LGPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+
+DEPENDENCIES="
+"
+
+src_compile() {
+    default
+}
+
+#src_install() {
+#}
+
