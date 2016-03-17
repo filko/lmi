@@ -15,7 +15,7 @@ PLATFORMS="~amd64 ~x86"
 
 DEPENDENCIES="
     run:
-         dev-libs/xulrunner[>=1.9]
+         net-www/firefox[>=1.9]
 "
 
 src_compile() {
