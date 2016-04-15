@@ -13,12 +13,19 @@ Mercator, Mollweide, orthographic, and rectangular."
 LICENCES="GPL-2"
 SLOT="0"
 PLATFORMS="~amd64"
-MYOPTIONS=""
+MYOPTIONS="
+    ( providers: ijg-jpeg jpeg-turbo ) [[ number-selected = exactly-one ]]
+"
 
 DEPENDENCIES="
     build+run:
         media-libs/freetype:=
-        media-libs/jpeg:=
+        providers:ijg-jpeg? (
+            media-libs/jpeg:=[>=6b]
+        )
+        providers:jpeg-turbo? (
+            media-libs/libjpeg-turbo
+        )
         media-libs/libpng:=
         x11-libs/libX11
         x11-libs/libXScrnSaver
