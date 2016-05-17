@@ -32,6 +32,10 @@ DEPENDENCIES="
         x11-libs/libXext
 "
 
+DEFAULT_SRC_PREPARE_PATCHES=(
+    "${FILES}"/${PNV}-remove-NULL-comparison-for-getline-calls.patch
+)
+
 DEFAULT_SRC_CONFIGURE_PARAMS=(
     --without-aqua
     --without-cspice
