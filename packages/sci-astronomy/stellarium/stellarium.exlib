@@ -21,6 +21,7 @@ LICENCES="GPL-2"
 SLOT="0"
 MYOPTIONS="
     stars [[ description = [ Install extra star catalogs. ] ]]
+    sound [[ description = [ Enable support for landscape sounds. ] ]]
 "
 
 DEPENDENCIES="
@@ -31,12 +32,13 @@ DEPENDENCIES="
         x11-dri/mesa
 "
 
-if ever at_least 0.13.1; then
+if ever at_least 0.15.0; then
     DEPENDENCIES+="
     build+run:
-        x11-libs/qtbase:5[>=5.5]
-        x11-libs/qtscript:5[>=5.5]
-        x11-libs/qtquick1:5[>=5.5]
+        x11-libs/qtbase:5[>=5.6]
+        x11-libs/qtscript:5[>=5.6]
+        x11-libs/qtscript:5[>=5.6]
+        sound? ( dev-qt/qtmultimedia:5 )
 "
     else
     DEPENDENCIES+="
@@ -53,6 +55,8 @@ fi
 if [ "${PV}" == "0.13.3" ] ; then
        DEFAULT_SRC_PREPARE_PATCHES=(-p0 "${FILES}"/stellarium-0.13.3-qt55.patch)
 fi
+
+CMAKE_SRC_CONFIGURE_OPTION_ENABLES=( "sound MEDIA" )
 
 BUGS_TO="johnkall007@gmail.com"
 UPSTREAM_CHANGELOG="http://linux.softpedia.com/progChangelog/Stellarium-Changelog-1215.html"
@@ -73,7 +77,7 @@ stellarium_src_install() {
     fi
     cmake_src_install
 
-    MULTIARCH_MOVE_DIRS=(man applications icons)
+    MULTIARCH_MOVE_DIRS=(man applications icons locale)
     edo cp -r ${MULTIARCH_MOVE_DIRS[@]/#/"${IMAGE}"/usr/"$(exhost --target)"/share/} "${IMAGE}"/usr/share/
     edo rm -r ${MULTIARCH_MOVE_DIRS[@]/#/"${IMAGE}"/usr/"$(exhost --target)"/share/}
 }
