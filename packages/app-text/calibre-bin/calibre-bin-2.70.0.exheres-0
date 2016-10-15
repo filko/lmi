@@ -1,0 +1,37 @@
+# Copyright 2016 Volodymyr Medvid <vmedvid@riseup.net>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Binary version of Calibre eBook library management application."
+DESCRIPTION="
+Formerly known as libprs500, Calibre is an e-book library management application.
+It can view, convert and catalog e-books in most of the major e-book formats. It
+can also talk to many e-book reader devices. It can go out to the internet and
+fetch metadata for your books. It can download newspapers and convert them into
+e-books for convenient reading.
+Calibre is free, open source and cross-platform in design and works on Linux,
+OS X and Windows.
+"
+HOMEPAGE=" https://${PN}-ebook.com"
+DOWNLOADS="${HOMEPAGE}/dist/linux64 -> ${PNV}-x86_64.tar.xz"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+# Binaries are already stripped
+RESTRICT="strip"
+WORK=${WORKBASE}
+
+pkg_setup() {
+    exdirectory --allow /opt
+}
+
+src_install() {
+    insinto /opt/${PN}
+    doins -r .
+    edo chmod +x "${IMAGE}"/opt/${PN}/{,bin}/*
+}
+
