@@ -17,6 +17,7 @@ MYOPTIONS="
 
 DEPENDENCIES="
     build+run:
+        sys-apps/file
         x11-libs/libICE
         x11-libs/libSM
         x11-libs/libX11
@@ -35,7 +36,8 @@ DEPENDENCIES="
 
 worker_src_configure()
 {
-    econf --without-avfs --without-hal --enable-inotify --disable-xft \
+    econf --with-libmagic --enable-inotify \
+          --without-avfs --without-hal --disable-xim --disable-xft \
         $(option_with udisks dbus) \
         $(option_enable lua)
 }
