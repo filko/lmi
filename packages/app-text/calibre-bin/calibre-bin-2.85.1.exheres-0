@@ -1,4 +1,4 @@
-# Copyright 2016 Volodymyr Medvid <vmedvid@riseup.net>
+# Copyright 2016-2017 Volodymyr Medvid <vmedvid@riseup.net>
 # Distributed under the terms of the GNU General Public License v2
 
 SUMMARY="Binary version of Calibre eBook library management application."
@@ -11,8 +11,8 @@ e-books for convenient reading.
 Calibre is free, open source and cross-platform in design and works on Linux,
 OS X and Windows.
 "
-HOMEPAGE=" https://calibre-ebook.com"
-DOWNLOADS="${HOMEPAGE}/dist/linux64 -> ${PNV}-x86_64.tar.xz"
+HOMEPAGE="https://calibre-ebook.com"
+DOWNLOADS="https://download.calibre-ebook.com/${PV}/calibre-${PV}-${HOSTTYPE}.txz"
 
 LICENCES="GPL-3"
 SLOT="0"
