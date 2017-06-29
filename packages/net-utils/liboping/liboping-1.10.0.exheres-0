@@ -1,0 +1,19 @@
+# Copyright 2009, 2011 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="liboping is a C library to generate ICMP echo requests, better known as “ping packets”."
+DESCRIPTION="It is intended for use in network monitoring applications or applications that would otherwise need to fork ping(1) frequently. Included is a sample application, called oping, which demonstrates the library’s abilities. It is like ping, ping6, and fping rolled into one. Second example application, noping, provides an ncurses-based front-end to liboping."
+HOMEPAGE="https://noping.cc/"
+DOWNLOADS="${HOMEPAGE}/files/${PNV}.tar.bz2"
+
+LICENCES="GPL-2 LGPL-2.1"
+SLOT="0"
+PLATFORMS="~amd64"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --without-perl-bindings --with-ncurses)
+
+DEPENDENCIES="
+    build+run:
+         sys-libs/ncurses[>=5]
+"
+
