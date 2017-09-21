@@ -1,4 +1,5 @@
 # Copyright 2010 Timothy Redaelli <timothy@redaelli.eu>
+# Copyright 2015 Łukasz P. Michalik <lpmichalik@googlemail.com>
 # Distributed under the terms of the GNU General Public License v2
 
 MY_PV=${PV:0-1}.${PV:0:${#PV}-1}
