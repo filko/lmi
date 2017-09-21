@@ -13,5 +13,5 @@ PLATFORMS="~amd64"
 DEPENDENCIES="
 "
 
-DEFAULT_SRC_CONFIGURE_PARAMS=( --hates=docdir )
+DEFAULT_SRC_CONFIGURE_PARAMS=( --hates=docdir --hates=datarootdir )
 
