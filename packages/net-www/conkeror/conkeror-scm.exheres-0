@@ -15,7 +15,7 @@ PLATFORMS="~amd64 ~x86"
 
 DEPENDENCIES="
     run:
-         net-www/firefox[>=1.9]
+         net-www/firefox[>=1.9&<57.0]
 "
 
 src_compile() {
