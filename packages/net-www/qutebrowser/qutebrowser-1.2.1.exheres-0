@@ -1,0 +1,23 @@
+# Copyright 2018 Łukasz P. Michalik <lpmichalik@googlemail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ suffix=tar.gz release="v${PV}" ]
+require setup-py [ import=setuptools has_bin=true blacklist="2 3.4" multibuild=false ]
+
+SUMMARY="qutebrowser is a keyboard-focused browser with a minimal GUI."
+DESCRIPTION="It’s based on Python and PyQt5 and free software, licensed under the GPL.  It was
+inspired by other browsers/addons like dwb and Vimperator/Pentadactyl."
+HOMEPAGE="https://qutebrowser.org/"
+
+LICENCES="GPL3"
+
+PLATFORMS="~amd64"
+SLOT="0"
+
+DEPENDENCIES="
+    run:
+        dev-python/PyYAML[python_abis:*(-)?]
+        dev-python/pyPEG2[python_abis:*(-)?]
+        dev-python/PyQt5[python_abis:*(-)?][webengine][sql]
+"
+
