@@ -1,4 +1,4 @@
-# Copyright 2016-2017 Volodymyr Medvid <vmedvid@riseup.net>
+# Copyright 2016-2018 Volodymyr Medvid <vmedvid@riseup.net>
 # Distributed under the terms of the GNU General Public License v2
 
 SUMMARY="Binary version of Calibre eBook library management application."
@@ -32,6 +32,6 @@ pkg_setup() {
 src_install() {
     insinto /opt/${PN}
     doins -r .
-    edo chmod +x "${IMAGE}"/opt/${PN}/{,bin}/*
+    edo chmod +x "${IMAGE}"/opt/${PN}{,/bin}/*
 }
 
