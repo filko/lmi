@@ -5,3 +5,17 @@ require qutebrowser
 
 PLATFORMS="~amd64"
 
+DEPENDENCIES="
+    build:
+        app-doc/asciidoc
+        app-text/xmlto
+"
+
+src_compile() {
+    qutebrowser_src_compile
+
+    edo python3 scripts/asciidoc2html.py
+    edo asciidoc --doctype=manpage --backend=docbook --out-file=doc/${PN}.1.xml doc/${PN}.1.asciidoc
+    edo xmlto man doc/${PN}.1.xml -o doc/
+}
+
