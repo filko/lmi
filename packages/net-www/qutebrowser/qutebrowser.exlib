@@ -5,7 +5,7 @@
 require github [ suffix=tar.gz release="v${PV}" ]
 require setup-py [ import=setuptools has_bin=true blacklist="2 3.4" multibuild=false ]
 
-export_exlib_phases src_install
+export_exlib_phases src_install src_compile
 
 SUMMARY="qutebrowser is a keyboard-focused browser with a minimal GUI."
 DESCRIPTION="It’s based on Python and PyQt5 and free software, licensed under the GPL.  It was
@@ -23,12 +23,16 @@ DEPENDENCIES="
         dev-python/PyQt5[python_abis:*(-)?][webengine][sql]
 "
 
-qutebrowser_src_install(){
+qutebrowser_src_compile() {
+    setup-py_src_compile
+}
+
+qutebrowser_src_install() {
     setup-py_src_install
 
-    for file in icons/*.png ; do
-        insinto "/usr/share/icons/hicolor/${file:18:-4}/apps/"
-        newins "${file}" ${PN}.png
+    for res in 16 24 32 48 64 96 128 256 512 ; do
+        insinto /usr/share/icons/hicolor/${res}x${res}/apps/
+        newins "${WORK}"/icons/${PN}-${res}x${res}.png ${PN}.png
     done
 
     insinto "/usr/share/icons/hicolor/scalable/apps/"
