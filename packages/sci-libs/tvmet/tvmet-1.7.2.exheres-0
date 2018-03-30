@@ -13,10 +13,5 @@ PLATFORMS="~amd64"
 DEPENDENCIES="
 "
 
-src_compile() {
-    default
-}
-
-#src_install() {
-#}
+DEFAULT_SRC_CONFIGURE_PARAMS=( --with-cxx=$(exhost --target)c++ )
 
