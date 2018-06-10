@@ -1,0 +1,64 @@
+# Copyright 2018 Julian Ospald <hasufell@posteo.de>
+# Distributed under the terms of the GNU General Public License v2
+
+require gtk-icon-cache freedesktop-desktop
+
+SUMMARY="Allows you to send and receive messages of Signal Messenger on your computer"
+HOMEPAGE="https://signal.org/"
+DOWNLOADS="platform:amd64? ( https://updates.signal.org/desktop/apt/pool/main/s/${PN}/${PN}_${PV}_amd64.deb )"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS="
+    platform: amd64
+"
+RESTRICT="mirror"
+
+DEPENDENCIES="
+    run:
+        dev-libs/nss
+        gnome-platform/GConf:2
+        net-print/cups
+        x11-libs/gtk+:3[X]
+        x11-libs/libXScrnSaver
+        x11-libs/libXtst
+"
+
+BUGS_TO="hasufell@posteo.de"
+
+REMOTE_IDS="github:WhisperSystems/Signal-Desktop"
+
+WORK=${WORKBASE}
+
+pkg_setup() {
+    exdirectory --allow /opt
+}
+
+src_unpack() {
+    default
+    unpack ./data.tar.xz
+}
+
+src_install() {
+    dodoc -r usr/share/doc/signal-desktop/.
+    insinto /
+    doins -r opt
+    insinto /usr/share
+    doins -r usr/share/applications
+    doins -r usr/share/icons
+    edo chmod +x "${IMAGE}"/opt/Signal/signal-desktop
+    dodir /usr/$(exhost --target)/bin/${PN}
+    dosym ../../../opt/Signal/${MY_PN} /usr/$(exhost --target)/bin/${PN}
+}
+
+pkg_postinst() {
+    freedesktop-desktop_pkg_postinst
+    gtk-icon-cache_pkg_postinst
+}
+
+pkg_postrm() {
+    freedesktop-desktop_pkg_postrm
+    gtk-icon-cache_pkg_postrm
+}
+
