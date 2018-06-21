@@ -1,20 +1,52 @@
 # Copyright 2010 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
 # Distributed under the terms of the GNU General Public License v2
 
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.16 ] ]
+require github [ user=wojtekka release=${PV} suffix=tar.gz ]
+
+export_exlib_phases src_prepare
+
 SUMMARY="Library for the Gadu-Gadu protocol"
 HOMEPAGE="http://libgadu.net/"
-DOWNLOADS="https://github.com/wojtekka/libgadu/releases/download/${PV}/${PNV}.tar.gz"
 
 LICENCES="LGPL-2.1"
 SLOT="0"
-MYOPTIONS="gnutls [[ description = [ Use GnuTLS instead of OpenSSL ] ]]"
+MYOPTIONS="
+    ( providers: gnutls openssl ) [[ number-selected = exactly-one ]]
+"
+# libressl doesn't work because libgadu still uses SSLv3, which has been
+# removed from LibreSSL.
 
 DEPENDENCIES="
+    build:
+        virtual/pkg-config
     build+run:
-       !gnutls? ( dev-libs/openssl )
-        gnutls? ( dev-libs/gnutls )
+        dev-libs/protobuf-c
         sys-libs/zlib
+        providers:gnutls? ( dev-libs/gnutls[>=2.10.0] )
+        providers:openssl? ( dev-libs/openssl )
+    test:
+        dev-lang/perl:*
+        dev-libs/expat
+        dev-libs/libxml2:2.0[>=2.2.3]
+        net-misc/curl
 "
 
-DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( '!gnutls openssl' gnutls )
+libgadu_src_prepare() {
+    # Disable tests which want to bind to 0.0.0.0@0
+    edo sed -e "/TESTS = /s/ protocol//" \
+        -e "/TESTS = /s/ resolver//" \
+        -i test/automatic/Makefile.am
+
+    option providers:gnutls && edo sed -e "/TESTS = /s/ connect//" \
+        -i test/automatic/Makefile.am
+
+    autotools_src_prepare
+}
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-werror )
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=(
+    "providers:gnutls gnutls"
+    "providers:openssl openssl"
+)
 
