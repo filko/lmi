@@ -1,3 +1,0 @@
-#! /bin/sh
-
-exec firefox -app /usr/libexec/conkeror/application.ini "$@"
