@@ -20,7 +20,7 @@ DEPENDENCIES="
         dev-libs/openssl[>=0.9.7]
         dev-libs/tinyxml2
         sys-devel/gettext
-        sys-fs/fuse[>=2.6]
+        sys-fs/fuse:0[>=2.6]
 "
 
 CMAKE_SRC_CONFIGURE_PARAMS=(
