@@ -21,6 +21,8 @@ DEPENDENCIES="
         dev-python/PyYAML[python_abis:*(-)?]
         dev-python/pyPEG2[python_abis:*(-)?]
         dev-python/PyQt5[python_abis:*(-)?][webengine][sql]
+    test:
+        dev-python/tox
 "
 
 qutebrowser_src_compile() {
@@ -42,5 +44,12 @@ qutebrowser_src_install() {
     doins misc/${PN}.desktop
 
     doman doc/${PN}.1
+}
+
+setup-py_test_one_multibuild() {
+    local abi=$(python_get_abi | sed -e 's/\.//')
+    einfo abi
+    edo tox -e py${abi}
+    die
 }
 
