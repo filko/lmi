@@ -5,7 +5,7 @@
 require github [ suffix=tar.gz release="v${PV}" ]
 require setup-py [ import=setuptools has_bin=true blacklist="2 3.4" multibuild=false ]
 
-export_exlib_phases src_install src_compile
+export_exlib_phases src_install src_compile src_test
 
 SUMMARY="qutebrowser is a keyboard-focused browser with a minimal GUI."
 DESCRIPTION="It’s based on Python and PyQt5 and free software, licensed under the GPL.  It was
@@ -42,5 +42,10 @@ qutebrowser_src_install() {
     doins misc/${PN}.desktop
 
     doman doc/${PN}.1
+}
+
+qutebrowser_src_test()
+{
+    :
 }
 
