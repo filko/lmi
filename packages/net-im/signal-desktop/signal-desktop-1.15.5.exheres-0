@@ -16,6 +16,11 @@ MYOPTIONS="
 RESTRICT="mirror"
 
 DEPENDENCIES="
+    build+run:
+        !net-im/signal-desktop[<1.15.5] [[
+            description = [ /usr/host/bin/${PN} was accidentially a directory, paludis would refuse to merge ]
+            resolution = uninstall-blocked-before
+        ]]
     run:
         dev-libs/atk
         dev-libs/expat
@@ -68,8 +73,8 @@ src_install() {
     doins -r usr/share/applications
     doins -r usr/share/icons
     edo chmod +x "${IMAGE}"/opt/Signal/signal-desktop
-    dodir /usr/$(exhost --target)/bin/${PN}
-    dosym ../../../opt/Signal/${MY_PN} /usr/$(exhost --target)/bin/${PN}
+    dodir /usr/$(exhost --target)/bin/
+    dosym ../../../opt/Signal/signal-desktop /usr/$(exhost --target)/bin/${PN}
 }
 
 pkg_postinst() {
