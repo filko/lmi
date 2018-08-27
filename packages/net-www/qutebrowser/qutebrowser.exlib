@@ -18,6 +18,7 @@ SLOT="0"
 
 DEPENDENCIES="
     run:
+        dev-python/Jinja2[python_abis:*(-)?][>2.9]
         dev-python/PyYAML[python_abis:*(-)?]
         dev-python/pyPEG2[python_abis:*(-)?]
         dev-python/PyQt5[python_abis:*(-)?][webengine][sql]
