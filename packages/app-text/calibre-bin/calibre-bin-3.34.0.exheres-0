@@ -12,12 +12,17 @@ Calibre is free, open source and cross-platform in design and works on Linux,
 OS X and Windows.
 "
 HOMEPAGE="https://calibre-ebook.com"
-DOWNLOADS="https://download.calibre-ebook.com/${PV}/calibre-${PV}-${HOSTTYPE}.txz"
+DOWNLOADS="
+    platform:amd64? ( https://download.calibre-ebook.com/${PV}/calibre-${PV}-x86_64.txz )
+    platform:x86?   ( https://download.calibre-ebook.com/${PV}/calibre-${PV}-i686.txz )
+"
 
 LICENCES="GPL-3"
 SLOT="0"
-PLATFORMS="~amd64"
-MYOPTIONS=""
+PLATFORMS="-* ~amd64 ~x86"
+MYOPTIONS="
+    platform: amd64 x86
+"
 
 DEPENDENCIES=""
 
