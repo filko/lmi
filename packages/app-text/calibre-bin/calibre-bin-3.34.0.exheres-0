@@ -1,6 +1,8 @@
 # Copyright 2016-2018 Volodymyr Medvid <vmedvid@riseup.net>
 # Distributed under the terms of the GNU General Public License v2
 
+require gtk-icon-cache freedesktop-desktop freedesktop-mime
+
 SUMMARY="Binary version of Calibre eBook library management application."
 DESCRIPTION="
 Formerly known as libprs500, Calibre is an e-book library management application.
@@ -42,5 +44,17 @@ src_install() {
     hereenvd 80calibre <<EOF
 PATH=/opt/calibre-bin
 EOF
+}
+
+pkg_postinst() {
+    freedesktop-mime_pkg_postinst
+    freedesktop-desktop_pkg_postinst
+    gtk-icon-cache_pkg_postinst
+}
+
+pkg_postrm() {
+    freedesktop-mime_pkg_postrm
+    freedesktop-desktop_pkg_postrm
+    gtk-icon-cache_pkg_postrm
 }
 
