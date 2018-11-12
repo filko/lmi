@@ -38,5 +38,9 @@ src_install() {
     insinto /opt/${PN}
     doins -r .
     edo chmod +x "${IMAGE}"/opt/${PN}{,/bin}/*
+
+    hereenvd 80calibre <<EOF
+PATH=/opt/calibre-bin
+EOF
 }
 
