@@ -1,0 +1,58 @@
+# Copyright 2012 Łukasz P. Michalik <lpmichalik@googlemail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require kde.org kde
+require freedesktop-desktop gtk-icon-cache
+
+SUMMARY="KDESvn is a frontend to the  subversion vcs"
+
+HOMEPAGE="https://cgit.kde.org/kdesvn.git/"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64"
+
+DEPENDENCIES="
+    build:
+        kde-frameworks/kdoctools:5
+    build+run:
+        dev-libs/apr
+        dev-libs/apr-util
+        dev-scm/subversion:=[>=1.4]
+        kde-frameworks/kbookmarks:5
+        kde-frameworks/kcodecs:5
+        kde-frameworks/kcompletion:5
+        kde-frameworks/kconfig:5
+        kde-frameworks/kconfigwidgets:5
+        kde-frameworks/kcoreaddons:5
+        kde-frameworks/kdbusaddons:5
+        kde-frameworks/ki18n:5
+        kde-frameworks/kiconthemes:5
+        kde-frameworks/kio:5
+        kde-frameworks/kitemviews:5
+        kde-frameworks/kjobwidgets:5
+        kde-frameworks/knotifications:5
+        kde-frameworks/kparts:5
+        kde-frameworks/kservice:5
+        kde-frameworks/ktextwidgets:5
+        kde-frameworks/kwallet:5
+        kde-frameworks/kwidgetsaddons:5
+        kde-frameworks/kxmlgui:5
+        x11-libs/qtbase:5[>=5.9.0][sql]
+"
+
+DEFAULT_SRC_PREPARE_PATCHES=(
+    "${FILES}"/${PN}-Fix-compilation-with-Qt-5.11-missing-include.patch
+    "${FILES}"/${PN}-Fix-startup-s-caption-qwindowtitle.patch
+)
+
+pkg_postinst() {
+    freedesktop-desktop_pkg_postinst
+    gtk-icon-cache_pkg_postinst
+}
+
+pkg_postrm() {
+    freedesktop-desktop_pkg_postrm
+    gtk-icon-cache_pkg_postrm
+}
+
