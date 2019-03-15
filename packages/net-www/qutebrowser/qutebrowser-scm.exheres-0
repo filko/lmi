@@ -19,3 +19,10 @@ src_compile() {
     edo xmlto man doc/${PN}.1.xml -o doc/
 }
 
+src_install() {
+    qutebrowser_src_install
+
+    insinto /usr/share/applications
+    doins misc/org.${PN}.${PN}.desktop
+}
+

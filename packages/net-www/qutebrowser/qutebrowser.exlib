@@ -40,9 +40,6 @@ qutebrowser_src_install() {
     insinto "/usr/share/icons/hicolor/scalable/apps/"
     doins icons/${PN}.svg
 
-    insinto /usr/share/applications
-    doins misc/${PN}.desktop
-
     doman doc/${PN}.1
 }
 

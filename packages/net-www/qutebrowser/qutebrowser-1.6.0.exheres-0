@@ -5,3 +5,10 @@ require qutebrowser
 
 PLATFORMS="~amd64"
 
+src_install() {
+    qutebrowser_src_install
+
+    insinto /usr/share/applications
+    doins misc/${PN}.desktop
+}
+
