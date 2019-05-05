@@ -3,6 +3,8 @@
 # Based upon 'xsel-1.2.0.ebuild', which is:
 #   Copyright 1999-2009 Gentoo Foundation
 
+require github [ user=kfish rev=24bee9c7f4dc887eabb2783f21cbf9734d723d72 ]
+
 SUMMARY="CLI application for getting and setting the contents of the X selection"
 DESCRIPTION="
 XSel is a command-line program for getting and setting the contents of the X
@@ -10,7 +12,6 @@ selection. Normally this is only accessible by manually highlighting information
 and pasting it with the middle mouse button.
 "
 HOMEPAGE="http://www.vergenet.net/~conrad/software/${PN}"
-DOWNLOADS="${HOMEPAGE}/download/${PNV}.tar.gz"
 
 LICENCES="as-is"
 SLOT="0"
@@ -25,3 +26,8 @@ DEPENDENCIES="
         x11-libs/libXext
 "
 
+src_prepare() {
+    default
+
+    edo ./autogen.sh
+}
