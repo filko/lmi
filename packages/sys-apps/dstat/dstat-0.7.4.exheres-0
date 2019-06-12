@@ -1,7 +1,7 @@
 # Copyright 2012 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
 # Distributed under the terms of the GNU General Public License v2
 
-require github [ user=dagwieers tag=${PV} ]
+require github [ user=dagwieers tag="v${PV}" ] python [ blacklist=none multibuild=false ]
 
 SUMMARY="Dstat is a versatile replacement for vmstat, iostat, netstat and ifstat"
 
@@ -20,8 +20,13 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     run:
-        dev-lang/python:*[<3]
+        dev-python/six[python_abis:*(-)?]
 "
 
-DEFAULT_SRC_INSTALL_PARAMS=( DESTDIR="${IMAGE}/usr/$(exhost --target)/" prefix= )
+RESTRICT="test"
+
+DEFAULT_SRC_INSTALL_PARAMS=(
+    DESTDIR="${IMAGE}"
+    bindir="/usr/$(exhost --target)/bin"
+)
 
