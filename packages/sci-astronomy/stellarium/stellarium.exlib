@@ -47,14 +47,9 @@ stellarium_src_unpack() {
 }
 stellarium_src_install() {
     if option stars ; then
-        insinto /usr/share/stellarium/stars/default
+        insinto /usr/$(exhost --target)/share/stellarium/stars/default
         doins "${WORKBASE}"/stars_*.cat
     fi
     cmake_src_install
-
-    # Until upstream listens...
-    MULTIARCH_MOVE_DIRS=(man applications icons)
-    edo cp -r ${MULTIARCH_MOVE_DIRS[@]/#/"${IMAGE}"/usr/"$(exhost --target)"/share/} "${IMAGE}"/usr/share/
-    edo rm -r ${MULTIARCH_MOVE_DIRS[@]/#/"${IMAGE}"/usr/"$(exhost --target)"/share/}
 }
 
