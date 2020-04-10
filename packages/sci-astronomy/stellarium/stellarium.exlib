@@ -26,6 +26,8 @@ MYOPTIONS="
 "
 
 DEPENDENCIES="
+    build:
+        x11-libs/qttools:5[>=5.6]
     build+run:
         sys-libs/zlib
         x11-libs/qtbase:5[>=5.6]
