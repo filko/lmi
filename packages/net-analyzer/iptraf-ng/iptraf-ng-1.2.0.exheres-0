@@ -1,6 +1,8 @@
 # Copyright 2012 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
 # Distributed under the terms of the GNU General Public License v2
 
+require github [ tag="v${PV}" ]
+
 SUMMARY="Console-based network monitoring utility"
 
 DESCRIPTION="IPTraf-ng gathers data like TCP connection packet and byte counts, interface statistics
@@ -15,9 +17,6 @@ display filters so you can view just the traffic you want; logging; support for 
 ISDN, SLIP, PPP, and loopback interfaces; and utilization of the built-in raw socket interface of
 the Linux kernel, so it can be used on a wide variety of supported network cards."
 
-HOMEPAGE="https://fedorahosted.org/iptraf-ng/"
-DOWNLOADS="https://fedorahosted.org/releases/i/p/${PN}/${PNV}.tar.gz"
-
 LICENCES="GPL-2"
 SLOT="0"
 PLATFORMS="~amd64 ~x86"
@@ -27,4 +26,11 @@ DEPENDENCIES="
     build+run:
         sys-libs/ncurses[>=5.7]
 "
+
+src_configure() {
+    edo sed -ie "s|^prefix = .*|prefix = /usr/$(exhost --target)/|" Makefile
+    edo sed -ie "s|^sbindir_relative =.*|sbindir_relative = bin|" Makefile
+}
+
+DEFAULT_SRC_COMPILE_PARAMS=( CC=$(exhost --tool-prefix)cc )
 
