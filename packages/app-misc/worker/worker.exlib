@@ -25,9 +25,6 @@ DEPENDENCIES="
         lua? (
             dev-lang/lua:=
         )
-        udisks? (
-            dev-libs/dbus-glib
-        )
     run:
         udisks? (
             sys-apps/udisks
@@ -38,7 +35,6 @@ worker_src_configure()
 {
     econf --with-libmagic --enable-inotify \
           --without-avfs --without-hal --disable-xim --disable-xft \
-        $(option_with udisks dbus) \
         $(option_enable lua)
 }
 
