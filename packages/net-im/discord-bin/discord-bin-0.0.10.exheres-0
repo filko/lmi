@@ -1,0 +1,63 @@
+# Copyright 2020 <hasufell@posteo.de>
+# Distributed under the terms of the GNU General Public License v2
+
+require freedesktop-mime freedesktop-desktop gtk-icon-cache
+
+SUMMARY="All-in-one voice and text chat for gamers"
+HOMEPAGE="https://discordapp.com"
+DOWNLOADS="https://dl.discordapp.net/apps/linux/${PV}/discord-${PV}.tar.gz"
+
+LICENCES="all-rights-reserved"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    run:
+        dev-libs/atk
+"
+
+BUGS_TO="hasufell@posteo.de"
+
+WORK=${WORKBASE}/Discord
+
+pkg_setup() {
+    exdirectory --allow /opt
+}
+
+src_prepare() {
+	default
+
+	sed -i \
+		-e "s:/usr/share/discord/Discord:/opt/discord/Discord:g" \
+		discord.desktop
+}
+
+src_install() {
+    insinto /usr/share/icons/hicolor/256x256/apps
+    doins discord.png
+
+    insinto /usr/share/applications
+    doins discord.desktop
+
+    insinto /opt/discord
+    doins -r .
+
+    mkdir -p "${IMAGE}/usr/$(exhost --target)/bin"
+    dosym ../../../opt/discord/Discord /usr/$(exhost --target)/bin/discord
+    chmod +x "${IMAGE}/usr/$(exhost --target)/bin/discord"
+}
+
+pkg_postrm() {
+    freedesktop-desktop_pkg_postrm
+    freedesktop-mime_pkg_postrm
+    gtk-icon-cache_pkg_postrm
+}
+
+pkg_postinst() {
+    freedesktop-desktop_pkg_postinst
+    freedesktop-mime_pkg_postinst
+    gtk-icon-cache_pkg_postinst
+}
+
+
