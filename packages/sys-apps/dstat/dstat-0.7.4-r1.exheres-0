@@ -25,8 +25,20 @@ DEPENDENCIES="
 
 RESTRICT="test"
 
+DEFAULT_SRC_PREPARE_PATCHES=(
+    "${FILES}"/Dool-fix-for-some-Python-deprecations.patch
+    "${FILES}"/Make-CSV-output-work-again.patch
+)
+
 DEFAULT_SRC_INSTALL_PARAMS=(
     DESTDIR="${IMAGE}"
     bindir="/usr/$(exhost --target)/bin"
 )
+
+src_prepare() {
+    default
+    edo sed \
+        -e "1 s|bin.\+$|$(exhost --target)/bin/python$(python_get_abi)|" \
+        -i "${PN}"
+}
 
