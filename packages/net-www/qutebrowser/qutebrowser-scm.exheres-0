@@ -6,6 +6,8 @@ require qutebrowser
 PLATFORMS="~amd64"
 
 DEPENDENCIES="
+    run:
+        dev-python/importlib_resources[>1.1]
     build:
         app-doc/asciidoc
         app-text/xmlto
