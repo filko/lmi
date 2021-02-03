@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 require github [ suffix=tar.gz release="v${PV}" ]
-require setup-py [ import=setuptools has_bin=true blacklist="2 3.4 " min_versions="3.5.2" multibuild=false ]
+require setup-py [ import=setuptools has_bin=true blacklist="2 3.4 3.5 3.6" min_versions="3.7.0" multibuild=false ]
 
 export_exlib_phases src_install src_compile src_test
 
@@ -16,14 +16,20 @@ LICENCES="GPL3"
 
 SLOT="0"
 
+MYOPTIONS="adblock [[ description = [ Use Brave's adblock (unpackaged) ] ]]"
+
 DEPENDENCIES="
     run:
         dev-python/Jinja2[python_abis:*(-)?][>2.9]
         dev-python/Pygments[python_abis:*(-)?]
         dev-python/PyYAML[python_abis:*(-)?]
-        dev-python/pyPEG2[python_abis:*(-)?]
-        dev-python/PyQt5[python_abis:*(-)?][sql]
+        dev-python/PyQt5[python_abis:*(-)?][sql][>5.12]
         dev-python/PyQtWebEngine[python_abis:*(-)?]
+        dev-python/importlib_resources[python_abis:*(-)?] [[ note = [ actually only needed for python[<3.9] ] ]]
+
+        adblock? (
+            dev-python/adblock
+        )
 "
 
 qutebrowser_src_compile() {
