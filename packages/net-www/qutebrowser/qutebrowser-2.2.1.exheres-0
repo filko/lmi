@@ -5,5 +5,3 @@ require qutebrowser
 
 PLATFORMS="~amd64"
 
-DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}/8232d384929641be7409e026d20843a2edd73e48.patch" )
-
