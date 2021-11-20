@@ -27,10 +27,10 @@ DEPENDENCIES="
         sys-libs/ncurses[>=5.7]
 "
 
-src_configure() {
-    edo sed -ie "s|^prefix = .*|prefix = /usr/$(exhost --target)/|" Makefile
-    edo sed -ie "s|^sbindir_relative =.*|sbindir_relative = bin|" Makefile
-}
-
 DEFAULT_SRC_COMPILE_PARAMS=( CC=$(exhost --tool-prefix)cc )
+DEFAULT_SRC_INSTALL_PARAMS=(
+    prefix="/usr/$(exhost --target)"
+    sbindir_relative=bin
+    mandir=/usr/share/man
+)
 
