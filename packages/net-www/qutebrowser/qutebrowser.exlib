@@ -41,11 +41,11 @@ qutebrowser_src_install() {
 
     for res in 16 24 32 48 64 96 128 256 512 ; do
         insinto /usr/share/icons/hicolor/${res}x${res}/apps/
-        newins "${WORK}"/icons/${PN}-${res}x${res}.png ${PN}.png
+        newins "${WORK}"/${PN}/icons/${PN}-${res}x${res}.png ${PN}.png
     done
 
     insinto "/usr/share/icons/hicolor/scalable/apps/"
-    doins icons/${PN}.svg
+    doins ${PN}/icons/${PN}.svg
 
     insinto /usr/share/applications
     doins misc/org.${PN}.${PN}.desktop

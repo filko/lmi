@@ -5,3 +5,9 @@ require qutebrowser
 
 PLATFORMS="~amd64"
 
+src_install() {
+    mv "${WORK}"/icons "${WORK}"/${PN}/icons
+
+    qutebrowser_src_install
+}
+
