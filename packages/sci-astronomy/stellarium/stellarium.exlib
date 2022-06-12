@@ -31,6 +31,7 @@ DEPENDENCIES="
     build+run:
         sys-libs/zlib
         x11-libs/qtbase:5[>=5.6]
+        x11-libs/qtcharts:5[>=5.6]
         x11-libs/qtscript:5[>=5.6]
         x11-libs/qtserialport:5[>=5.6]
         sound? ( dev-qt/qtmultimedia:5[>=5.6] )
@@ -53,5 +54,6 @@ stellarium_src_install() {
         doins "${WORKBASE}"/stars_*.cat
     fi
     cmake_src_install
+    edo rmdir "${IMAGE}"/usr/x86_64-pc-linux-gnu/share/stellarium/skycultures/greek_almagest/almstars
 }
 
