@@ -10,49 +10,41 @@ require github [ user="Stellarium" release="v${PV}" suffix="tar.gz" ]
 
 SUMMARY="Planetarium"
 DESCRIPTION="Desktop planetarium that renders photorealistic 3D sky in real time."
-CATALOGS=(stars_5_2v0_0.cat stars_4_1v0_0.cat stars_6_2v0_0.cat stars_7_2v0_0.cat stars_8_2v0_0.cat)
-DOWNLOADS+="
-stars? (
-    ${CATALOGS[@]/#/mirror://sourceforge/${PN}/}
-)"
 
 HOMEPAGE="http://${PN}.org/"
 
 LICENCES="GPL-2"
 SLOT="0"
 MYOPTIONS="
-    stars [[ description = [ Install extra star catalogs.  Increases install size by 1.2GB and runtime memory usage considerably. ] ]]
     sound [[ description = [ Enable support for landscape sounds. ] ]]
 "
 
 DEPENDENCIES="
     build:
-        x11-libs/qttools:5[>=5.6]
+        x11-libs/qttools:5[>=5.9]
     build+run:
+        sci-libs/nlopt
         sys-libs/zlib
-        x11-libs/qtbase:5[>=5.6]
-        x11-libs/qtcharts:5[>=5.6]
-        x11-libs/qtscript:5[>=5.6]
-        x11-libs/qtserialport:5[>=5.6]
-        sound? ( dev-qt/qtmultimedia:5[>=5.6] )
+        x11-libs/qtbase:5[>=5.9]
+        x11-libs/qtcharts:5[>=5.9]
+        x11-libs/qtscript:5[>=5.9]
+        x11-libs/qtserialport:5[>=5.9]
+        sound? ( dev-qt/qtmultimedia:5[>=5.9] )
 "
 
-CMAKE_SRC_CONFIGURE_PARAMS=( "-DENABLE_GPS:BOOL=FALSE" )
+CMAKE_SRC_CONFIGURE_PARAMS=(
+    "-DENABLE_GPS:BOOL=FALSE"
+    "-DENABLE_QT6:BOOL=FALSE"
+    "-DENABLE_SHOWMYSKY:BOOL=FALSE"
+    "-DENABLE_XLSX:BOOL=FALSE"
+    "-DUSE_PLUGIN_TELESCOPECONTROL:BOOL=FALSE"
+    "-DCPM_USE_LOCAL_PACKAGES:BOOL=FALSE"
+)
 CMAKE_SRC_CONFIGURE_OPTION_ENABLES=( "sound MEDIA" )
 
-export_exlib_phases src_unpack src_install
+export_exlib_phases src_install
 
-stellarium_src_unpack() {
-    cmake_src_unpack
-    if option stars ; then
-        edo cp "${CATALOGS[@]/#/${FETCHEDDIR}/}" "${WORKBASE}"/
-    fi
-}
 stellarium_src_install() {
-    if option stars ; then
-        insinto /usr/$(exhost --target)/share/stellarium/stars/default
-        doins "${WORKBASE}"/stars_*.cat
-    fi
     cmake_src_install
     edo rmdir "${IMAGE}"/usr/x86_64-pc-linux-gnu/share/stellarium/skycultures/greek_almagest/almstars
 }
