@@ -37,6 +37,6 @@ worker_src_configure()
     econf --enable-inotify \
           --without-avfs --without-hal --disable-xim --disable-xft \
           $(option_enable lua) \
-          $(optionq nomagic && echo --with-libmagic || echo --without-libmagic)
+          $(option nomagic --without-libmagic --with-libmagic)
 }
 
