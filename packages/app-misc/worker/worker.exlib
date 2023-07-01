@@ -12,6 +12,7 @@ REMOTE_IDS="sourceforge:workerfm"
 
 MYOPTIONS="
     lua
+    nomagic [[ description = [ disable using libmagic to detect filetypes ] ]]
     udisks [[ description = [ Support mounting devices with udisks ] ]]
 "
 
@@ -33,8 +34,9 @@ DEPENDENCIES="
 
 worker_src_configure()
 {
-    econf --with-libmagic --enable-inotify \
+    econf --enable-inotify \
           --without-avfs --without-hal --disable-xim --disable-xft \
-        $(option_enable lua)
+          $(option_enable lua) \
+          $(optionq nomagic && echo --with-libmagic || echo --without-libmagic)
 }
 
