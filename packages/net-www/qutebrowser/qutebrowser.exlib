@@ -2,7 +2,11 @@
 # Copyright 2018 Danilo Spinella <danyspin97@protonmail.com>
 # Distributed under the terms of the GNU General Public License v2
 
-require github [ suffix=tar.gz release="v${PV}" branch="main" ]
+if ever is_scm ; then
+    require github [ suffix=tar.gz release="v${PV}" branch="main" ]
+else
+    require github [ suffix=tar.gz release="v${PV}" ]
+fi
 require setup-py [ import=setuptools has_bin=true blacklist="2 3.4 3.5 3.6" min_versions="3.7.0" multibuild=false ]
 
 export_exlib_phases src_install src_compile src_test
