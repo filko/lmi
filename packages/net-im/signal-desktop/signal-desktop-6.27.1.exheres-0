@@ -5,7 +5,7 @@ require gtk-icon-cache freedesktop-desktop
 
 SUMMARY="Allows you to send and receive messages of Signal Messenger on your computer"
 HOMEPAGE="https://signal.org/"
-DOWNLOADS="platform:amd64? ( https://updates.signal.org/desktop/apt/pool/main/s/${PN}/${PN}_${PV}_amd64.deb )"
+DOWNLOADS="platform:amd64? ( https://updates.signal.org/desktop/apt/pool/s/${PN}/${PN}_${PV}_amd64.deb )"
 
 LICENCES="GPL-3"
 SLOT="0"
