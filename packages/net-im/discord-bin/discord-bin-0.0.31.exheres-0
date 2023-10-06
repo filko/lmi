@@ -42,8 +42,6 @@ DEPENDENCIES="
         x11-libs/pango
 "
 
-BUGS_TO="hasufell@posteo.de"
-
 WORK=${WORKBASE}/Discord
 
 pkg_setup() {
@@ -67,6 +65,9 @@ src_install() {
 
     insinto /opt/discord
     doins -r .
+
+    exeinto /opt/discord
+    doexe chrome{-sandbox,_crashpad_handler} *.so
 
     mkdir -p "${IMAGE}/usr/$(exhost --target)/bin"
     dosym ../../../opt/discord/Discord /usr/$(exhost --target)/bin/discord
