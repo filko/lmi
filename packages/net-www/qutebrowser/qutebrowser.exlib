@@ -7,7 +7,7 @@ if ever is_scm ; then
 else
     require github [ suffix=tar.gz release="v${PV}" ]
 fi
-require setup-py [ import=setuptools has_bin=true blacklist="2 3.4 3.5 3.6" min_versions="3.7.0" multibuild=false ]
+require setup-py [ import=setuptools has_bin=true blacklist="2 3.4 3.5 3.6 3.7" min_versions="3.8.0" multibuild=false ]
 
 export_exlib_phases src_install src_compile src_test
 
@@ -27,8 +27,8 @@ DEPENDENCIES="
         dev-python/Jinja2[python_abis:*(-)?][>2.9]
         dev-python/Pygments[python_abis:*(-)?]
         dev-python/PyYAML[python_abis:*(-)?]
-        dev-python/PyQt5[python_abis:*(-)?][sql][>5.12]
-        dev-python/PyQtWebEngine[python_abis:*(-)?]
+        dev-python/PyQt6[python_abis:*(-)?][sql][>6.2.2]
+        dev-python/PyQt6WebEngine[python_abis:*(-)?][>6.2.2]
         dev-python/importlib_resources[python_abis:*(-)?] [[ note = [ actually only needed for python[<3.9] ] ]]
 
         adblock? (
