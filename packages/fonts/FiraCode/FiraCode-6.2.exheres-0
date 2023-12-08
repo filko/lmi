@@ -1,0 +1,23 @@
+# Copyright 2023 Łukasz P. Michalik <lpmichalik@googlemail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require xfont
+
+SUMMARY="free monospaced font with programming ligatures"
+HOMEPAGE="https://github.com/tonsky/FiraCode"
+DOWNLOADS="https://github.com/tonsky/FiraCode/releases/download/${PV}/Fira_Code_v${PV}.zip"
+
+LICENCES="OFL-1.1"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+WORK=${WORKBASE}
+
+src_install() {
+    insinto /usr/share/fonts/X11/${PN}
+    doins ttf/*.ttf variable_ttf/*ttf
+}
+
