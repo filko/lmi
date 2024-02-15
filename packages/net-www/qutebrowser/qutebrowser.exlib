@@ -7,7 +7,7 @@ if ever is_scm ; then
 else
     require github [ suffix=tar.gz release="v${PV}" ]
 fi
-require setup-py [ import=setuptools has_bin=true blacklist="2 3.4 3.5 3.6 3.7" min_versions="3.8.0" multibuild=false ]
+require setup-py [ import=setuptools has_bin=true blacklist="2 3.4 3.5 3.6 3.7 3.12" min_versions="3.8.0" multibuild=false ]
 
 export_exlib_phases src_install src_compile src_test
 

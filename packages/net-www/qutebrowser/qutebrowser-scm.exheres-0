@@ -9,7 +9,7 @@ DEPENDENCIES="
     run:
         dev-python/importlib_resources[>1.1]
     build:
-        app-doc/asciidoc
+        app-doc/asciidoc[python_abis:*(-)?]
         app-text/xmlto
 "
 
