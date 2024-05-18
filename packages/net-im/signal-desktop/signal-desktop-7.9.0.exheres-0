@@ -22,21 +22,23 @@ DEPENDENCIES="
             resolution = uninstall-blocked-before
         ]]
     run:
+        dev-libs/at-spi2-atk
+        dev-libs/at-spi2-core
         dev-libs/atk
         dev-libs/expat
         dev-libs/glib:2
         dev-libs/nspr
         dev-libs/nss
-        gnome-platform/GConf:2
         media-libs/fontconfig
         net-print/cups
         sys-apps/dbus
         sys-sound/alsa-lib
+        x11-dri/libdrm
+        x11-dri/mesa
         x11-libs/cairo[X]
         x11-libs/gdk-pixbuf:2.0[X]
         x11-libs/gtk+:3[X]
         x11-libs/libX11
-        x11-libs/libXScrnSaver
         x11-libs/libXcomposite
         x11-libs/libXcursor
         x11-libs/libXdamage
@@ -47,10 +49,9 @@ DEPENDENCIES="
         x11-libs/libXrender
         x11-libs/libXtst
         x11-libs/libxcb
+        x11-libs/libxkbcommon
         x11-libs/pango
 "
-
-BUGS_TO="hasufell@posteo.de"
 
 REMOTE_IDS="github:WhisperSystems/Signal-Desktop"
 
