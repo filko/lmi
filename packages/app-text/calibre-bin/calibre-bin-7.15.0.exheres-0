@@ -33,7 +33,7 @@ pkg_setup() {
 src_install() {
     insinto /opt/${PN}
     doins -r .
-    edo chmod +x "${IMAGE}"/opt/${PN}{,/bin}/*
+    edo chmod +x "${IMAGE}"/opt/${PN}{,/bin,/libexec}/*
 
     hereenvd 80calibre <<EOF
 PATH=/opt/calibre-bin
