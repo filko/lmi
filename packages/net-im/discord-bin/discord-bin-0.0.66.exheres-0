@@ -14,8 +14,6 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     run:
-        dev-libs/atk
-        dev-libs/at-spi2-atk
         dev-libs/at-spi2-core
         dev-libs/expat
         dev-libs/glib:2
@@ -85,5 +83,4 @@ pkg_postinst() {
     freedesktop-mime_pkg_postinst
     gtk-icon-cache_pkg_postinst
 }
-
 
