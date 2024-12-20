@@ -1,7 +1,0 @@
-# Copyright 2010 Łukasz P. Michalik <lmi@ift.uni.wroc.pl>
-# Distributed under the terms of the GNU General Public License v2
-
-require libgadu
-
-PLATFORMS="~amd64 ~x86"
-
