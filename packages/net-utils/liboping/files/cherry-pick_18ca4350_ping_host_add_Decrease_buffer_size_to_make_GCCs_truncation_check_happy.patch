@@ -1,0 +1,29 @@
+From: Florian Forster <ff@octo.it>
+Date: Wed, 22 Jan 2020 08:45:14 +0000
+Subject: ping_host_add: Decrease buffer size to make GCC's truncation check
+ happy.
+
+Origin: commit 18ca43507b351f339ff23062541ee8d58e813a53
+Bug: https://github.com/octo/liboping/issues/38
+Bug-Debian: https://bugs.debian.org/897790
+---
+ src/liboping.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+Index: liboping/src/liboping.c
+===================================================================
+--- liboping.orig/src/liboping.c
++++ liboping/src/liboping.c
+@@ -1605,10 +1605,8 @@ int ping_host_add (pingobj_t *obj, const
+ 		}
+ 		else
+ 		{
+-			char errmsg[PING_ERRMSG_LEN];
+-
+-			snprintf (errmsg, PING_ERRMSG_LEN, "Unknown `ai_family': %i", ai_ptr->ai_family);
+-			errmsg[PING_ERRMSG_LEN - 1] = '\0';
++			char errmsg[64];
++			snprintf (errmsg, sizeof(errmsg), "Unknown `ai_family': %d", ai_ptr->ai_family);
+ 
+ 			dprintf ("%s", errmsg);
+ 			ping_set_error (obj, "getaddrinfo", errmsg);

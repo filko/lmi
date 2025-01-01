@@ -1,0 +1,562 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ liboping (1.10.0-4) unstable; urgency=high
+ .
+   * Bump debhelper from old 12 to 13.
+   * Fix FTBFS by rejiggering perl version generation (closes: #963416)
+   * Tell dh_missing to not worry about *.la files
+   * Bump standards version
+   * Mark perl package multi-arch: same per multi-arch hinter
+Author: Barak A. Pearlmutter <bap@debian.org>
+Bug-Debian: https://bugs.debian.org/963416
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2020-07-02
+
+Index: liboping/src/liboping.c
+===================================================================
+--- liboping.orig/src/liboping.c
++++ liboping/src/liboping.c
+@@ -1344,41 +1344,10 @@ int ping_send (pingobj_t *obj)
+ 	struct timeval nowtime;
+ 	struct timeval timeout;
+ 
+-	_Bool need_ipv4_socket = 0;
+-	_Bool need_ipv6_socket = 0;
+-
+ 	for (ptr = obj->head; ptr != NULL; ptr = ptr->next)
+ 	{
+ 		ptr->latency  = -1.0;
+ 		ptr->recv_ttl = -1;
+-
+-		if (ptr->addrfamily == AF_INET)
+-			need_ipv4_socket = 1;
+-		else if (ptr->addrfamily == AF_INET6)
+-			need_ipv6_socket = 1;
+-	}
+-
+-	if (!need_ipv4_socket && !need_ipv6_socket)
+-	{
+-		ping_set_error (obj, "ping_send", "No hosts to ping");
+-		return (-1);
+-	}
+-
+-	if (need_ipv4_socket && obj->fd4 == -1)
+-	{
+-		obj->fd4 = ping_open_socket(obj, AF_INET);
+-		if (obj->fd4 == -1)
+-			return (-1);
+-		ping_set_ttl (obj, obj->ttl);
+-		ping_set_qos (obj, obj->qos);
+-	}
+-	if (need_ipv6_socket && obj->fd6 == -1)
+-	{
+-		obj->fd6 = ping_open_socket(obj, AF_INET6);
+-		if (obj->fd6 == -1)
+-			return (-1);
+-		ping_set_ttl (obj, obj->ttl);
+-		ping_set_qos (obj, obj->qos);
+ 	}
+ 
+ 	if (gettimeofday (&nowtime, NULL) == -1)
+@@ -1465,6 +1434,7 @@ int ping_send (pingobj_t *obj)
+ 				(unsigned) timeout.tv_usec);
+ 
+ 		int status = select (max_fd + 1, &read_fds, &write_fds, NULL, &timeout);
++		int select_errno = errno;
+ 
+ 		if (gettimeofday (&nowtime, NULL) == -1)
+ 		{
+@@ -1474,7 +1444,7 @@ int ping_send (pingobj_t *obj)
+ 
+ 		if (status == -1)
+ 		{
+-			ping_set_errno (obj, errno);
++			ping_set_errno (obj, select_errno);
+ 			dprintf ("select: %s\n", obj->errmsg);
+ 			return (-1);
+ 		}
+@@ -1700,6 +1670,23 @@ int ping_host_add (pingobj_t *obj, const
+ 	ph->table_next = obj->table[ph->ident % PING_TABLE_LEN];
+ 	obj->table[ph->ident % PING_TABLE_LEN] = ph;
+ 
++	if (ph->addrfamily == AF_INET && obj->fd4 == -1)
++	{
++		obj->fd4 = ping_open_socket(obj, AF_INET);
++		if (obj->fd4 == -1)
++			return (-1);
++		ping_set_ttl (obj, obj->ttl);
++		ping_set_qos (obj, obj->qos);
++	}
++	if (ph->addrfamily == AF_INET6 && obj->fd6 == -1)
++	{
++		obj->fd6 = ping_open_socket(obj, AF_INET6);
++		if (obj->fd6 == -1)
++			return (-1);
++		ping_set_ttl (obj, obj->ttl);
++		ping_set_qos (obj, obj->qos);
++	}
++
+ 	return (0);
+ } /* int ping_host_add */
+ 
+Index: liboping/src/mans/oping.pod
+===================================================================
+--- liboping.orig/src/mans/oping.pod
++++ liboping/src/mans/oping.pod
+@@ -238,6 +238,14 @@ remainder.
+ 
+ =back
+ 
++=item B<-H> I<height>
++
++Sets the height of the boxs containing each graph.  The <height> must
++be a number between 1 and 5.  The default is B<5> lines, which shows the
++maximum amount of information.  Reducing the size will remove the textual
++information and will eventually remove the box drawn around the graph -
++showing only the graph when set to B<1> line.
++
+ =item B<-b>
+ 
+ Audible bell. Print a ASCII BEL character (\a or 0x07) when a packet
+@@ -321,8 +329,10 @@ printed in red.
+ =head1 INTERACTIVE KEYBOARD CONTROLS
+ 
+ When running I<noping>, the type of graph being displayed can be
+-changed by using the B<g> key.  A new host can be added at any time
+-with the B<a> key.
++changed by using the B<g> key.
++The height of the graph boxes can also be increased and decreased with B<+> and
++B<-> keys.
++A new host can be added at any time with the B<a> key.
+ 
+ =head1 SEE ALSO
+ 
+Index: liboping/src/oping.c
+===================================================================
+--- liboping.orig/src/oping.c
++++ liboping/src/oping.c
+@@ -94,6 +94,9 @@
+ #  error "SysV or X/Open-compatible Curses header file required"
+ #endif
+ 
++# define MIN_BOX_HEIGHT 1
++# define MAX_BOX_HEIGHT 5
++
+ # define OPING_GREEN 1
+ # define OPING_YELLOW 2
+ # define OPING_RED 3
+@@ -212,6 +215,7 @@ static double  opt_percentile = -1.0;
+ static double  opt_exit_status_threshold = 1.0;
+ #if USE_NCURSES
+ static int     opt_show_graph = 1;
++static int     opt_box_height = MAX_BOX_HEIGHT;
+ static int     opt_utf8       = 0;
+ #endif
+ static char   *opt_outfile    = NULL;
+@@ -471,6 +475,7 @@ static void usage_exit (const char *name
+ #if USE_NCURSES
+ 			"  -u / -U      force / disable UTF-8 output\n"
+ 			"  -g graph     graph type to draw\n"
++                        "  -H lines     height of each box\n"
+ #endif
+ 			"  -P percent   Report the n'th percentile of latency\n"
+ 			"  -Z percent   Exit with non-zero exit status if more than this percentage of\n"
+@@ -679,7 +684,7 @@ static int read_options (int argc, char
+ 	{
+ 		optchar = getopt (argc, argv, "46c:hi:I:t:Q:f:D:Z:O:P:m:w:b"
+ #if USE_NCURSES
+-				"uUg:"
++				"uUg:H:"
+ #endif
+ 				);
+ 
+@@ -809,6 +814,18 @@ static int read_options (int argc, char
+ 					fprintf (stderr, "Unknown graph option: %s\n", optarg);
+ 				break;
+ 
++			case 'H':
++                        {
++                                int height;
++                                height = atoi (optarg);
++                                if ((height >= MIN_BOX_HEIGHT) && (height <= MAX_BOX_HEIGHT))
++                                    opt_box_height = height;
++                                else
++                                    fprintf (stderr, "Ignoring invalid window height: %s\n",
++                                             optarg);
++				break;
++                        }
++
+ 			case 'u':
+ 				opt_utf8 = 2;
+ 				break;
+@@ -923,6 +940,7 @@ static int update_graph_boxplot (ping_co
+ 	uint32_t *counters;
+ 	double *ratios;
+ 	size_t i;
++        size_t y_max;
+ 	size_t x_max;
+ 	size_t x;
+ 
+@@ -931,6 +949,12 @@ static int update_graph_boxplot (ping_co
+ 	if (ctx->history_received == 0)
+ 		return (ENOENT);
+ 
++        y_max = (size_t) getmaxy (ctx->window);
++        if (y_max>2) {
++            y_max -= 2; /* one each for top and bottom border */
++        } else
++            y_max -= 1;
++
+ 	x_max = (size_t) getmaxx (ctx->window);
+ 	if (x_max <= 8)
+ 		return (EINVAL);
+@@ -1011,8 +1035,8 @@ static int update_graph_boxplot (ping_co
+ 
+ 		if (reverse)
+ 			wattron (ctx->window, A_REVERSE);
+-		mvwaddch (ctx->window, /* y = */ 3, /* x = */ (int) (x + 2), symbol);
+-		// mvwprintw (ctx->window, /* y = */ 3, /* x = */ (int) (x + 2), symbol);
++		mvwaddch (ctx->window, /* y = */ y_max, /* x = */ (int) (x + 2), symbol);
++		// mvwprintw (ctx->window, /* y = */ y_max, /* x = */ (int) (x + 2), symbol);
+ 		if (reverse)
+ 			wattroff (ctx->window, A_REVERSE);
+ 	}
+@@ -1027,8 +1051,15 @@ static int update_graph_prettyping (ping
+ {
+ 	size_t x;
+ 	size_t x_max;
++        size_t y_max;
+ 	size_t history_offset;
+ 
++        y_max = (size_t) getmaxy (ctx->window);
++        if (y_max>2) {
++            y_max -= 2; /* one each for top and bottom border */
++        } else
++            y_max -= 1;
++
+ 	x_max = (size_t) getmaxx (ctx->window);
+ 	if (x_max <= 4)
+ 		return (EINVAL);
+@@ -1063,7 +1094,7 @@ static int update_graph_prettyping (ping
+ 
+ 		if (x >= ctx->history_size)
+ 		{
+-			mvwaddch (ctx->window, /* y = */ 3, /* x = */ x + 2, ' ');
++			mvwaddch (ctx->window, /* y = */ y_max, /* x = */ x + 2, ' ');
+ 			continue;
+ 		}
+ 
+@@ -1125,9 +1156,9 @@ static int update_graph_prettyping (ping
+ 			wattron (ctx->window, COLOR_PAIR(color));
+ 
+ 		if (has_utf8())
+-			mvwprintw (ctx->window, /* y = */ 3, /* x = */ x + 2, symbol);
++			mvwprintw (ctx->window, /* y = */ y_max, /* x = */ x + 2, symbol);
+ 		else
+-			mvwaddch (ctx->window, /* y = */ 3, /* x = */ x + 2, symbolc);
++			mvwaddch (ctx->window, /* y = */ y_max, /* x = */ x + 2, symbolc);
+ 
+ 		if (has_colors () == TRUE)
+ 			wattroff (ctx->window, COLOR_PAIR(color));
+@@ -1146,6 +1177,7 @@ static int update_graph_histogram (ping_
+ 	uint32_t *accumulated;
+ 	uint32_t max;
+ 	size_t i;
++        size_t y_max;
+ 	size_t x_max;
+ 	size_t x;
+ 
+@@ -1159,6 +1191,13 @@ static int update_graph_histogram (ping_
+ 	if (has_utf8 ())
+ 		symbols_num = hist_symbols_utf8_num;
+ 
++        y_max = (size_t) getmaxy (ctx->window);
++        if (y_max>2) {
++            y_max -= 2; /* one each for top and bottom border */
++        } else
++            y_max -= 1;
++
++
+ 	x_max = (size_t) getmaxx (ctx->window);
+ 	if (x_max <= 4)
+ 		return (EINVAL);
+@@ -1220,12 +1259,12 @@ static int update_graph_histogram (ping_
+ 		}
+ 
+ 		if (counters[x] == 0)
+-			mvwaddch (ctx->window, /* y = */ 3, /* x = */ x + 2, ' ');
++			mvwaddch (ctx->window, /* y = */ y_max, /* x = */ x + 2, ' ');
+ 		else if (has_utf8 ())
+-			mvwprintw (ctx->window, /* y = */ 3, /* x = */ x + 2,
++			mvwprintw (ctx->window, /* y = */ y_max, /* x = */ x + 2,
+ 					hist_symbols_utf8[index]);
+ 		else
+-			mvwaddch (ctx->window, /* y = */ 3, /* x = */ x + 2,
++			mvwaddch (ctx->window, /* y = */ y_max, /* x = */ x + 2,
+ 					hist_symbols_acs[index] | A_ALTCHARSET);
+ 
+ 		if (has_colors () == TRUE)
+@@ -1250,34 +1289,45 @@ static int update_stats_from_context (pi
+ 
+ 	/* werase (ctx->window); */
+ 
+-	box (ctx->window, 0, 0);
+-	wattron (ctx->window, A_BOLD);
+-	mvwprintw (ctx->window, /* y = */ 0, /* x = */ 5,
+-			" %s ", ctx->host);
+-	wattroff (ctx->window, A_BOLD);
+-	wprintw (ctx->window, "ping statistics ");
+-	mvwprintw (ctx->window, /* y = */ 1, /* x = */ 2,
+-			"%i packets transmitted, %i received, %.2f%% packet "
+-			"loss, time %.1fms",
+-			ctx->req_sent, ctx->req_rcvd,
+-			context_get_packet_loss (ctx),
+-			ctx->latency_total);
+-	if (ctx->req_rcvd != 0)
+-	{
+-		double min;
+-		double median;
+-		double max;
+-		double percentile;
+-
+-		min = percentile_to_latency (ctx, 0.0);
+-		median = percentile_to_latency (ctx, 50.0);
+-		max = percentile_to_latency (ctx, 100.0);
+-		percentile = percentile_to_latency (ctx, opt_percentile);
+-
+-		mvwprintw (ctx->window, /* y = */ 2, /* x = */ 2,
+-				"RTT[ms]: min = %.0f, median = %.0f, p(%.0f) = %.0f, max = %.0f  ",
+-				min, median, opt_percentile, percentile, max);
+-	}
++        if (opt_box_height == 1 ) {
++            mvwprintw (ctx->window, /* y = */ 0, /* x = */ 1,
++                            "[");
++            mvwprintw (ctx->window, /* y = */ 0,
++                /* x = */ getmaxx(ctx->window) -2, "]");
++        } else if (opt_box_height > 1 ) {
++            box (ctx->window, 0, 0);
++            wattron (ctx->window, A_BOLD);
++            mvwprintw (ctx->window, /* y = */ 0, /* x = */ 5,
++                            " %s ", ctx->host);
++            wattroff (ctx->window, A_BOLD);
++            wprintw (ctx->window, "ping statistics ");
++        }
++        if (opt_box_height > 3) {
++            mvwprintw (ctx->window, /* y = */ 1, /* x = */ 2,
++                        "%i packets transmitted, %i received, %.2f%% packet "
++                        "loss, time %.1fms",
++                        ctx->req_sent, ctx->req_rcvd,
++                        context_get_packet_loss (ctx),
++                        ctx->latency_total);
++        }
++        if (opt_box_height > 4) {
++            if (ctx->req_rcvd != 0)
++            {
++                    double min;
++                    double median;
++                    double max;
++                    double percentile;
++
++                    min = percentile_to_latency (ctx, 0.0);
++                    median = percentile_to_latency (ctx, 50.0);
++                    max = percentile_to_latency (ctx, 100.0);
++                    percentile = percentile_to_latency (ctx, opt_percentile);
++
++                    mvwprintw (ctx->window, /* y = */ 2, /* x = */ 2,
++                                    "RTT[ms]: min = %.0f, median = %.0f, p(%.0f) = %.0f, max = %.0f  ",
++                                    min, median, opt_percentile, percentile, max);
++            }
++        }
+ 
+ 	if (opt_show_graph == 1)
+ 		update_graph_prettyping (ctx, latency);
+@@ -1291,25 +1341,39 @@ static int update_stats_from_context (pi
+ 	return (0);
+ } /* }}} int update_stats_from_context */
+ 
+-static int on_resize (pingobj_t *ping) /* {{{ */
++static int create_windows (pingobj_t *ping) /* {{{ */
+ {
+ 	pingobj_iter_t *iter;
+ 	int width = 0;
+ 	int height = 0;
+ 	int main_win_height;
+-	int box_height = (opt_show_graph == 0) ? 4 : 5;
++	int box_height = opt_box_height;
++
++        if (opt_show_graph == 0) {
++            box_height--;
++        }
+ 
+ 	getmaxyx (stdscr, height, width);
+ 	if ((height < 1) || (width < 1))
+ 		return (EINVAL);
+ 
+ 	main_win_height = height - (box_height * host_num);
+-	wresize (main_win, main_win_height, /* width = */ width);
++        if (main_win != NULL )
++        {
++            delwin(main_win);
++            main_win = NULL;
++        }
++        main_win = newwin (/* height = */ main_win_height,
++                           /* width = */ width,
++                           /* y = */ 0, /* x = */ 0);
++
++
+ 	/* Allow scrolling */
+ 	scrollok (main_win, TRUE);
+ 	/* wsetscrreg (main_win, 0, main_win_height - 1); */
+ 	/* Allow hardware accelerated scrolling. */
+ 	idlok (main_win, TRUE);
++        wmove (main_win, /* y = */ main_win_height - 1, /* x = */ 0);
+ 	wrefresh (main_win);
+ 
+ 	for (iter = ping_iterator_get (ping);
+@@ -1356,6 +1420,22 @@ static int check_resize (pingobj_t *ping
+ 			else if (opt_show_graph > 0)
+ 				opt_show_graph++;
+ 		}
++		else if (key == '+')
++		{
++			opt_box_height++;
++			if (opt_box_height>MAX_BOX_HEIGHT)
++				opt_box_height=MAX_BOX_HEIGHT;
++			else
++				need_resize = 1;
++		}
++		else if (key == '-')
++		{
++			opt_box_height--;
++			if (opt_box_height<MIN_BOX_HEIGHT)
++				opt_box_height=MIN_BOX_HEIGHT;
++			else
++				need_resize = 1;
++		}
+ 		else if (key == 'a')
+ 		{
+ 			char host[NI_MAXHOST];
+@@ -1383,28 +1463,18 @@ static int check_resize (pingobj_t *ping
+ 	}
+ 
+ 	if (need_resize)
+-		return (on_resize (ping));
++		return (create_windows (ping));
+ 	else
+ 		return (0);
+ } /* }}} int check_resize */
+ 
+ static int pre_loop_hook (pingobj_t *ping) /* {{{ */
+ {
+-	pingobj_iter_t *iter;
+-	int width = 0;
+-	int height = 0;
+-	int main_win_height;
+-	int box_height = (opt_show_graph == 0) ? 4 : 5;
+-
+ 	initscr ();
+ 	cbreak ();
+ 	noecho ();
+ 	nodelay (stdscr, TRUE);
+ 
+-	getmaxyx (stdscr, height, width);
+-	if ((height < 1) || (width < 1))
+-		return (EINVAL);
+-
+ 	if (has_colors () == TRUE)
+ 	{
+ 		start_color ();
+@@ -1417,39 +1487,8 @@ static int pre_loop_hook (pingobj_t *pin
+ 		init_pair (OPING_RED_HIST,    COLOR_RED,    COLOR_YELLOW);
+ 	}
+ 
+-	main_win_height = height - (box_height * host_num);
+-	main_win = newwin (/* height = */ main_win_height,
+-			/* width = */ width,
+-			/* y = */ 0, /* x = */ 0);
+-	/* Allow scrolling */
+-	scrollok (main_win, TRUE);
+-	/* wsetscrreg (main_win, 0, main_win_height - 1); */
+-	/* Allow hardware accelerated scrolling. */
+-	idlok (main_win, TRUE);
+-	wmove (main_win, /* y = */ main_win_height - 1, /* x = */ 0);
+-	wrefresh (main_win);
+-
+-	for (iter = ping_iterator_get (ping);
+-			iter != NULL;
+-			iter = ping_iterator_next (iter))
+-	{
+-		ping_context_t *context;
+-
+-		context = ping_iterator_get_context (iter);
+-		if (context == NULL)
+-			continue;
+-
+-		if (context->window != NULL)
+-		{
+-			delwin (context->window);
+-			context->window = NULL;
+-		}
+-		context->window = newwin (/* height = */ box_height,
+-				/* width = */ width,
+-				/* y = */ main_win_height + (box_height * context->index),
+-				/* x = */ 0);
+-	}
+-
++        /* FIXME - if this returns einval, fail out */
++        create_windows(ping);
+ 
+ 	/* Don't know what good this does exactly, but without this code
+ 	 * "check_resize" will be called right after startup and *somehow*
+@@ -2003,7 +2042,6 @@ int main (int argc, char **argv) /* {{{
+ 	while (opt_count != 0)
+ 	{
+ 		int index;
+-		int status;
+ 
+ 		if (gettimeofday (&tv_begin, NULL) < 0)
+ 		{
+@@ -2011,16 +2049,11 @@ int main (int argc, char **argv) /* {{{
+ 			return (1);
+ 		}
+ 
+-		status = ping_send (ping);
+-		if (status == -EINTR)
+-		{
+-			continue;
+-		}
+-		else if (status < 0)
++		if (ping_send (ping) < 0)
+ 		{
+ 			fprintf (stderr, "ping_send failed: %s\n",
+ 					ping_get_error (ping));
+-			return (1);
++			continue;
+ 		}
+ 
+ 		index = 0;
+@@ -2047,7 +2080,7 @@ int main (int argc, char **argv) /* {{{
+ 		time_calc (&ts_wait, &ts_int, &tv_begin, &tv_end);
+ 
+ 		/* printf ("Sleeping for %i.%09li seconds\n", (int) ts_wait.tv_sec, ts_wait.tv_nsec); */
+-		while ((status = nanosleep (&ts_wait, &ts_wait)) != 0)
++		while (nanosleep (&ts_wait, &ts_wait) != 0)
+ 		{
+ 			if (errno == EINTR)
+ 			{

@@ -10,7 +10,12 @@ LICENCES="GPL-2 LGPL-2.1"
 SLOT="0"
 PLATFORMS="~amd64"
 
-DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}"/18ca43507b351f339ff23062541ee8d58e813a53.patch )
+DEFAULT_SRC_PREPARE_PATCHES=(
+#    "${FILES}"/18ca43507b351f339ff23062541ee8d58e813a53.patch
+    "${FILES}"/0000-old-debian-changes.patch
+    "${FILES}"/cherry-pick_18ca4350_ping_host_add_Decrease_buffer_size_to_make_GCCs_truncation_check_happy.patch
+    "${FILES}"/fix_HOST_PRINTF_format_string.patch
+)
 DEFAULT_SRC_CONFIGURE_PARAMS=( --without-perl-bindings --with-ncurses)
 
 DEPENDENCIES="
