@@ -1,0 +1,19 @@
+# Copyright 2025 Łukasz P. Michalik <lpmichalik@googlemail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require cmake [ api=2 ]
+SUMMARY="some qt/qml utilities that might be used by various hypr* apps"
+HOMEPAGE="https://github.com/hyprwm/hyprland-qtutils"
+DOWNLOADS="https://github.com/hyprwm/hyprland-qtutils/archive/refs/tags/v0.1.1.tar.gz -> ${PNV}.tar.gz"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+QT=6.5
+DEPENDENCIES="
+    build+run:
+        dev-libs/hyprutils
+        x11-libs/qtbase:6[gui][>=$QT]
+"

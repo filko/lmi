@@ -1,0 +1,43 @@
+From e10a7e510f985c621cdca069b34249acc62eb9d1 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C5=81ukasz=20P=2E=20Michalik?= <lpmichalik@googlemail.com>
+Date: Thu, 2 Jan 2025 21:10:10 +0100
+Subject: [PATCH] remove udis86 check, it doesn't provide .pc file
+
+---
+ CMakeLists.txt | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9d5c58b7..28cbc1cf 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -28,17 +28,6 @@ execute_process(COMMAND ./scripts/generateVersion.sh
+ 
+ find_package(PkgConfig REQUIRED)
+ 
+-# Try to find canihavesomecoffee's udis86 using pkgconfig vmd/udis86 does not
+-# provide a .pc file and won't be detected this way
+-pkg_check_modules(udis_dep IMPORTED_TARGET udis86>=1.7.2)
+-
+-# Fallback to subproject
+-if(NOT udis_dep_FOUND)
+-  add_subdirectory("subprojects/udis86")
+-  include_directories("subprojects/udis86")
+-  message(STATUS "udis86 dependency not found, falling back to subproject")
+-endif()
+-
+ if(CMAKE_BUILD_TYPE)
+   string(TOLOWER ${CMAKE_BUILD_TYPE} BUILDTYPE_LOWER)
+   if(BUILDTYPE_LOWER STREQUAL "release")
+@@ -252,7 +241,7 @@ target_link_libraries(Hyprland rt PkgConfig::aquamarine_dep PkgConfig::hyprlang_
+ if(udis_dep_FOUND)
+   target_link_libraries(Hyprland PkgConfig::udis_dep)
+ else()
+-  target_link_libraries(Hyprland libudis86)
++  target_link_libraries(Hyprland udis86)
+ endif()
+ 
+ # used by `make installheaders`, to ensure the headers are generated
+-- 
+2.47.1
+
