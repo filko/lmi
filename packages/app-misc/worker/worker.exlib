@@ -23,6 +23,7 @@ DEPENDENCIES="
         x11-libs/libSM
         x11-libs/libX11
         x11-libs/libXinerama
+        x11-libs/libXft
         lua? (
             dev-lang/lua:=
         )
@@ -35,7 +36,7 @@ DEPENDENCIES="
 worker_src_configure()
 {
     econf --enable-inotify \
-          --without-avfs --without-hal --disable-xim --disable-xft \
+          --without-avfs --without-hal --disable-xim --enable-xft \
           $(option_enable lua) \
           $(option nomagic --without-libmagic --with-libmagic)
 }
