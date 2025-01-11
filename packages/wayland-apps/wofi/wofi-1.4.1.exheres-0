@@ -1,0 +1,20 @@
+# Copyright 2025 Łukasz P. Michalik <lpmichalik@googlemail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require meson
+SUMMARY="Wofi is a launcher/menu program for wlroots based wayland compositors such as sway"
+HOMEPAGE="https://hg.sr.ht/~scoopta/wofi"
+DOWNLOADS="https://hg.sr.ht/~scoopta/wofi/archive/v${PV}.tar.gz -> ${PNV}.tar.gz"
+
+MESON_SOURCE="${WORKBASE}/wofi-v${PV}"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+       sys-libs/wayland
+       x11-libs/gtk+:3
+"
