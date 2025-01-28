@@ -1,0 +1,52 @@
+# Copyright 2025 Łukasz P. Michalik <lpmichalik@googlemail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require cmake [ api=2 ]
+SUMMARY="Hyprland is a 100% independent, dynamic tiling Wayland compositor that doesn't sacrifice on its looks."
+HOMEPAGE="https://github.com/hyprwm/Hyprland"
+DOWNLOADS="https://github.com/hyprwm/Hyprland/releases/download/v${PV}/source-v${PV}.tar.gz -> ${PNV}.tar.gz"
+
+CMAKE_SOURCE="${WORKBASE}/hyprland-source"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/aquamarine[>=0.7.1] [[ note = [ version a guess and different than specified in CMakeLists ] ]]
+        dev-libs/glib:2
+        dev-libs/glaze[>=4.2.3]
+        dev-libs/hyprcursor[>=0.1.7]
+        dev-libs/hyprgraphics[>=0.1.1]
+        dev-libs/hyprlang[>=0.3.2]
+        dev-libs/hyprutils[>=0.4.0]
+        dev-libs/re2
+        dev-libs/udis86[>=1.7.2]
+        dev-util/hyprwayland-scanner[>=0.3.10]
+        sys-apps/util-linux
+        sys-libs/libinput
+        sys-libs/wayland-protocols
+        sys-libs/wayland[>=1.22.90]
+        x11-dri/libdrm
+        x11-dri/mesa
+        x11-libs/cairo
+        x11-libs/libXcursor
+        x11-libs/libxkbcommon
+        x11-libs/pango
+        x11-libs/pixman:1
+    recommendation:
+        dev-libs/hyprland-qtutils
+        sys-apps/xdg-desktop-portal-wlr
+"
+
+DEFAULT_SRC_PREPARE_PATCHES=("${FILES}/0001-remove-udis86-check-it-doesn-t-provide-.pc-file.patch")
+
+src_prepare() {
+    cmake_src_prepare
+
+    # avoid voiding version.h when building from tarball, which breaks hyprpm
+    edo rm "${CMAKE_SOURCE}"/scripts/generateVersion.sh
+}
+

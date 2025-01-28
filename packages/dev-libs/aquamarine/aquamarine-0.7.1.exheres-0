@@ -1,0 +1,32 @@
+# Copyright 2025 Łukasz P. Michalik <lpmichalik@googlemail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require cmake [ api=2 ]
+SUMMARY="a very light linux rendering backend library"
+DESCRIPTION="Aquamarine is a very light linux rendering backend library. It provides basic abstractions for an application to render on a Wayland session (in a window) or a native DRM session.
+It is agnostic of the rendering API (Vulkan/OpenGL) and designed to be lightweight, performant, and minimal."
+HOMEPAGE="https://github.com/hyprwm/aquamarine"
+DOWNLOADS="https://github.com/hyprwm/aquamarine/archive/refs/tags/v${PV}.tar.gz -> ${PNV}.tar.gz"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS="( providers: eudev systemd ) [[ number-selected = exactly-one ]]"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/hyprutils[>=0.2.3]
+        dev-libs/libdisplay-info
+        dev-util/hyprwayland-scanner[>=0.4.0]
+        sys-apps/hwdata
+        sys-auth/seatd[>=0.8.0]
+        sys-libs/libinput[>=1.26.0]
+        sys-libs/wayland
+        sys-libs/wayland-protocols
+        x11-dri/libdrm
+        x11-dri/mesa
+        x11-libs/pixman:1
+
+        providers:eudev? ( sys-apps/eudev )
+        providers:systemd? ( sys-apps/systemd )
+"
