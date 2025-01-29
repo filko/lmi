@@ -32,10 +32,13 @@ DEPENDENCIES="
         x11-dri/libdrm
         x11-dri/mesa
         x11-libs/cairo
+        x11-libs/libxcb
         x11-libs/libXcursor
         x11-libs/libxkbcommon
         x11-libs/pango
         x11-libs/pixman:1
+        x11-utils/xcb-util-errors
+        x11-utils/xcb-util-wm
     recommendation:
         dev-libs/hyprland-qtutils
         sys-apps/xdg-desktop-portal-wlr
