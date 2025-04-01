@@ -15,19 +15,19 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     build+run:
-        dev-libs/aquamarine[>=0.7.1] [[ note = [ version a guess and different than specified in CMakeLists ] ]]
+        dev-libs/aquamarine[>=0.8.0]
         dev-libs/glib:2
         dev-libs/glaze[>=4.2.3]
         dev-libs/hyprcursor[>=0.1.7]
         dev-libs/hyprgraphics[>=0.1.1]
         dev-libs/hyprlang[>=0.3.2]
-        dev-libs/hyprutils[>=0.4.0]
+        dev-libs/hyprutils[>=0.5.1]
         dev-libs/re2
         dev-libs/udis86[>=1.7.2]
         dev-util/hyprwayland-scanner[>=0.3.10]
         sys-apps/util-linux
         sys-libs/libinput
-        sys-libs/wayland-protocols
+        sys-libs/wayland-protocols[>=1.41]
         sys-libs/wayland[>=1.22.90]
         x11-dri/libdrm
         x11-dri/mesa
