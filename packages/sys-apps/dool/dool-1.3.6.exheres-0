@@ -1,0 +1,31 @@
+# Copyright 2012-2025 Łukasz P. Michalik <lpmichalik@googlemail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=scottchiefbaker tag="v${PV}" ] python [ multibuild=false ]
+
+SUMMARY="Dool is a command line tool to monitor many aspects of your Linux system"
+
+DESCRIPTION="Dool is a command line tool to monitor many aspects of your Linux system: CPU, Memory, Network, Load Average, etc. It also includes a robust plug-in architecture to allow monitoring other system metrics.
+
+Dool is a Python3 compatible fork of Dstat."
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES=""
+
+RESTRICT="test"
+
+DEFAULT_SRC_INSTALL_PARAMS=(
+    DESTDIR="${IMAGE}"
+    bindir="/usr/$(exhost --target)/bin"
+)
+
+src_install() {
+    default
+
+    dobin dool
+}
+
