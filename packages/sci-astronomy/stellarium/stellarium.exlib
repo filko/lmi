@@ -4,48 +4,79 @@
 # Initially based on stellarium-0.12.0.ebuild from Gentoo, which is
 # Copyright 1999-2013 Gentoo Foundation
 
-require cmake [ api="2" ]
-require gtk-icon-cache
 require github [ user="Stellarium" release="v${PV}" suffix="tar.gz" ]
+require cmake
+require freedesktop-desktop freedesktop-mime gtk-icon-cache
+
+export_exlib_phases src_prepare pkg_postinst pkg_postrm
 
 SUMMARY="Planetarium"
 DESCRIPTION="Desktop planetarium that renders photorealistic 3D sky in real time."
 
-HOMEPAGE="http://${PN}.org/"
+HOMEPAGE="https://${PN}.org/"
 
 LICENCES="GPL-2"
 SLOT="0"
 MYOPTIONS="
+    online-queries [[ description = [ Plugin allowing object information retrieval from online services ] ]]
     sound [[ description = [ Enable support for landscape sounds. ] ]]
+    tts   [[ description = [ Support for text to speech ]
+              requires = sound ]]
 "
 
 DEPENDENCIES="
     build:
-        x11-libs/qttools:5[>=5.9]
+        sys-devel/gettext
+        x11-libs/qttools:6[>=6.2]
     build+run:
+        app-text/md4c
+        dev-libs/onetbb [[ note = automagic ]]
+        graphics/exiv2
         sci-libs/nlopt
         sys-libs/zlib
-        x11-libs/qtbase:5[>=5.9]
-        x11-libs/qtcharts:5[>=5.9]
-        x11-libs/qtscript:5[>=5.9]
-        x11-libs/qtserialport:5[>=5.9]
-        sound? ( dev-qt/qtmultimedia:5[>=5.9] )
+        x11-libs/qtbase:6[>=6.2]
+        x11-libs/qtcharts:6[>=6.2]
+        x11-libs/qtdeclarative:6[>=6.2]
+        x11-libs/qtpositioning:6[>=6.2]
+        sound? ( x11-libs/qtmultimedia:6[>=6.2] )
+        tts? ( x11-libs/qtspeech:6[>=6.2] )
+        online-queries? ( x11-libs/qtwebengine:6[>=6.2]  )
 "
 
 CMAKE_SRC_CONFIGURE_PARAMS=(
+    "-DENABLE_CCACHE:BOOL=FALSE"
     "-DENABLE_GPS:BOOL=FALSE"
-    "-DENABLE_QT6:BOOL=FALSE"
+    "-DENABLE_INDI:BOOL=FALSE"
+    "-DENABLE_QT6:BOOL=TRUE"
+    "-DENABLE_SCRIPTING:BOOL=TRUE"
     "-DENABLE_SHOWMYSKY:BOOL=FALSE"
     "-DENABLE_XLSX:BOOL=FALSE"
     "-DUSE_PLUGIN_TELESCOPECONTROL:BOOL=FALSE"
     "-DCPM_USE_LOCAL_PACKAGES:BOOL=FALSE"
 )
-CMAKE_SRC_CONFIGURE_OPTION_ENABLES=( "sound MEDIA" )
+CMAKE_SRC_CONFIGURE_OPTION_ENABLES=(
+    "online-queries QTWEBENGINE"
+    "sound MEDIA"
+    "tts SPEECH"
+)
 
-export_exlib_phases src_install
+stellarium_src_prepare() {
+    cmake_src_prepare
 
-stellarium_src_install() {
-    cmake_src_install
-    edo rmdir "${IMAGE}"/usr/x86_64-pc-linux-gnu/share/stellarium/skycultures/greek_almagest/almstars
+    edo sed \
+        -e 's|\(DESTINATION\) share/|\1 ${CMAKE_INSTALL_DATAROOTDIR}/|' \
+        -i data/CMakeLists.txt
+}
+
+stellarium_pkg_postinst() {
+    freedesktop-desktop_pkg_postinst
+    freedesktop-mime_pkg_postinst
+    gtk-icon-cache_pkg_postinst
+}
+
+stellarium_pkg_postrm() {
+    freedesktop-desktop_pkg_postrm
+    freedesktop-mime_pkg_postrm
+    gtk-icon-cache_pkg_postrm
 }
 

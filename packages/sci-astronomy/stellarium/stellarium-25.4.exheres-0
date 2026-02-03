@@ -5,3 +5,7 @@ require stellarium
 
 PLATFORMS="~amd64"
 
+DEFAULT_SRC_PREPARE_PATCHES=(
+    "${FILES}"/${PN}-cmake-Fix-typo-to-allow-finding-Qt6TextToSpeech.patch
+)
+
