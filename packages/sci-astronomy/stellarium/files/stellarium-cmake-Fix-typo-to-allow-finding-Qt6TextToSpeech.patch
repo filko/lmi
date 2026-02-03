@@ -1,0 +1,33 @@
+Upstream: under review, https://github.com/Stellarium/stellarium/pull/4765
+
+From 790f01baad6573c51b44bbb490931bd34becd46a Mon Sep 17 00:00:00 2001
+From: Heiko Becker <mail@heiko-becker.de>
+Date: Fri, 6 Feb 2026 18:02:59 +0100
+Subject: [PATCH] cmake: Fix version comparison to allow finding
+ Qt6TextToSpeech
+
+...at least with Qt >= 6.10.
+
+GREATER_EQUAL parses the passed value as a real number, not as a version
+with components, so for example 6.10.2 is returned as smaller than
+6.4.0. But VERSION_GREATER_EQUAL exists exactly for such cases.
+---
+ src/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index c73c5f2ead..ac6a4fa5ca 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -513,7 +513,7 @@ IF(APPLE AND Qt6_FOUND)
+ ENDIF()
+ IF(ENABLE_MEDIA)
+      SET(STELLARIUM_QT_LIBRARIES ${STELLARIUM_QT_LIBRARIES} Qt${QT_VERSION_MAJOR}::Multimedia Qt${QT_VERSION_MAJOR}::MultimediaWidgets)
+-     IF(Qt6_FOUND AND Qt6Core_VERSION GREATER_EQUAL 6.4.0)
++     IF(Qt6_FOUND AND Qt6Core_VERSION VERSION_GREATER_EQUAL 6.4.0)
+           find_package(Qt6 COMPONENTS TextToSpeech)
+           IF(Qt6TextToSpeech_VERSION VERSION_GREATER_EQUAL 6.4.0)
+                SET(STELLARIUM_QT_LIBRARIES ${STELLARIUM_QT_LIBRARIES} Qt6::TextToSpeech)
+-- 
+2.53.0
+
