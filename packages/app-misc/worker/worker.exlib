@@ -19,6 +19,7 @@ MYOPTIONS="
 DEPENDENCIES="
     build+run:
         sys-apps/file
+        media-libs/imlib2
         x11-libs/libICE
         x11-libs/libSM
         x11-libs/libX11
@@ -35,7 +36,7 @@ DEPENDENCIES="
 
 worker_src_configure()
 {
-    econf --enable-inotify \
+    econf --enable-inotify --with-imlib2 \
           --without-avfs --without-hal --disable-xim --enable-xft \
           $(option_enable lua) \
           $(option nomagic --without-libmagic --with-libmagic)
