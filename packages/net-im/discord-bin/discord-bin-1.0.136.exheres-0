@@ -61,15 +61,11 @@ src_install() {
     insinto /usr/share/applications
     doins discord.desktop
 
-    insinto /opt/discord
-    doins -r .
-
     exeinto /opt/discord
-    doexe chrome{-sandbox,_crashpad_handler} *.so
+    doexe discord postinst.sh updater_bootstrap
 
     mkdir -p "${IMAGE}/usr/$(exhost --target)/bin"
-    dosym ../../../opt/discord/Discord /usr/$(exhost --target)/bin/discord
-    chmod +x "${IMAGE}/usr/$(exhost --target)/bin/discord"
+    dosym ../../../opt/discord/discord /usr/$(exhost --target)/bin/discord
 }
 
 pkg_postrm() {
