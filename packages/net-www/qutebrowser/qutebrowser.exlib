@@ -41,6 +41,9 @@ qutebrowser_src_compile() {
 }
 
 qutebrowser_src_install() {
+    if ever is_scm ; then
+        export SETUPTOOLS_SCM_IGNORE_DUBIOUS_OWNER=yes
+    fi
     setup-py_src_install
 
     for res in 16 24 32 48 64 96 128 256 512 ; do
