@@ -15,9 +15,9 @@ MYOPTIONS="( providers: eudev systemd ) [[ number-selected = exactly-one ]]"
 
 DEPENDENCIES="
     build+run:
-        dev-libs/hyprutils[>=0.5.2]
+        dev-libs/hyprutils[>=0.8.0]
         dev-libs/libdisplay-info
-        dev-util/hyprwayland-scanner[>=0.4.0]
+        dev-util/hyprwayland-scanner[>=0.4.5]
         sys-apps/hwdata
         sys-auth/seatd[>=0.8.0]
         sys-libs/libinput[>=1.26.0]
