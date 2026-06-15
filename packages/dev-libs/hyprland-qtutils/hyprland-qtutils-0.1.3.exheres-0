@@ -15,5 +15,11 @@ DEPENDENCIES="
     build+run:
         dev-libs/hyprutils
         x11-libs/qtbase:6[gui][>=6.5]
+        x11-libs/qtdeclarative:6
+        x11-libs/qtwayland:6
 "
+
+CMAKE_SRC_CONFIGURE_PARAMS=(
+    -DQT_FIND_PRIVATE_MODULES:BOOL=ON
+)
 
