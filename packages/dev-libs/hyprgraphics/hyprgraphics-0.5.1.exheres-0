@@ -10,14 +10,19 @@ LICENCES="BSD-3"
 SLOT="0"
 PLATFORMS="~amd64"
 MYOPTIONS="( providers: ijg-jpeg jpeg-turbo ) [[ number-selected = exactly-one ]]"
-# 
+
 DEPENDENCIES="
     build+run:
         dev-libs/hyprutils
+        gnome-desktop/librsvg
+        media-libs/libheif
         media-libs/libjxl
+        media-libs/libpng
         media-libs/libwebp
         sys-apps/file
+        x11-dri/libdrm
         x11-libs/cairo
+        x11-libs/pango
         x11-libs/pixman:1
 
         providers:ijg-jpeg? ( media-libs/jpeg:= )
