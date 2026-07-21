@@ -38,6 +38,7 @@ DEPENDENCIES="
         x11-libs/qtcharts:6[>=6.2]
         x11-libs/qtdeclarative:6[>=6.2]
         x11-libs/qtpositioning:6[>=6.2]
+        x11-libs/qtsvg:6[>=6.2]
         sound? ( x11-libs/qtmultimedia:6[>=6.2] )
         tts? ( x11-libs/qtspeech:6[>=6.2] )
         online-queries? ( x11-libs/qtwebengine:6[>=6.2]  )
